@@ -6,7 +6,7 @@ import (
 	"github.com/coopernurse/gorp"
 	_ "github.com/mattn/go-sqlite3"
 	r "github.com/revel/revel"
-	"github.com/revel/revel/modules/db/app"
+	"github.com/revel/modules/db/app"
 	"github.com/revel/revel/samples/booking/app/models"
 )
 
