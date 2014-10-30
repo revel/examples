@@ -7,7 +7,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	r "github.com/revel/revel"
 	"github.com/revel/modules/db/app"
-	"github.com/revel/revel/samples/booking/app/models"
+	"github.com/revel/samples/booking/app/models"
 )
 
 var (

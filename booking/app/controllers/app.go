@@ -3,8 +3,8 @@ package controllers
 import (
 	"code.google.com/p/go.crypto/bcrypt"
 	"github.com/revel/revel"
-	"github.com/revel/revel/samples/booking/app/models"
-	"github.com/revel/revel/samples/booking/app/routes"
+	"github.com/revel/samples/booking/app/models"
+	"github.com/revel/samples/booking/app/routes"
 )
 
 type Application struct {
