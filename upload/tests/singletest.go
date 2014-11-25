@@ -5,11 +5,12 @@ import (
 	"path"
 
 	"github.com/revel/revel"
+	"github.com/revel/revel/testing"
 )
 
 // SingleTest is a test suite of Multiple controller.
 type SingleTest struct {
-	revel.TestSuite
+	testing.TestSuite
 }
 
 // TestThatSingleAvatarUploadWorks checks whether Signle.HandleUpload doesn't let users
