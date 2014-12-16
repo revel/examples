@@ -7,11 +7,12 @@ import (
 	"github.com/revel/samples/upload/app/routes"
 
 	"github.com/revel/revel"
+	"github.com/revel/revel/testing"
 )
 
 // MultipleTest is a test suite of Multiple controller.
 type MultipleTest struct {
-	revel.TestSuite
+	testing.TestSuite
 }
 
 // TestThatMultipleFilesUploadWorks makes sure that Multiple.HandleUpload requires

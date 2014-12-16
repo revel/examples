@@ -6,12 +6,13 @@ import (
 	"time"
 
 	"github.com/revel/revel"
+	"github.com/revel/revel/testing"
 )
 
 var personaTestUsers map[string]PersonaTestUser
 
 type AppTest struct {
-	revel.TestSuite
+	testing.TestSuite
 }
 
 type PersonaTestUser struct {
