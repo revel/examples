@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"github.com/coopernurse/gorp"
+	"github.com/go-gorp/gorp"
 	"github.com/revel/revel"
 	"regexp"
 	"time"
