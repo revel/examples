@@ -1,7 +1,7 @@
-Hotel Bookings 
+Hotel Booking Example
 ===============================
 
-The Booking sample app demonstrates ([browse the source](https://github.com/revel/examples/tree/master/booking)):
+The Hotel Booking sample app demonstrates ([browse the source](https://github.com/revel/samples/tree/master/booking)):
 
 * Using an SQL (SQLite) database and configuring the Revel DB module.
 * Using the third party [GORP](https://github.com/coopernurse/gorp) *ORM-ish* library
@@ -9,6 +9,8 @@ The Booking sample app demonstrates ([browse the source](https://github.com/reve
 * Using [validation](../manual/validation) and displaying inline errors
 
 
+Here's a quick summary of the files and purpose
+```
 	booking/app/
 		models		   # Structs and validation.
 			booking.go
@@ -23,16 +25,17 @@ The Booking sample app demonstrates ([browse the source](https://github.com/reve
 
 		views
 			...
+```
 
-
-
+# Database Install and Setup
+This example used [sqlite](https://www.sqlite.org/), but u can easily adopt code to your needs with mysql, postgres, et all.
 
 ## sqlite Installation
 
-The booking app uses [go-sqlite3](https://github.com/mattn/go-sqlite3) database driver (which wraps the native C library). 
+- The booking app uses [go-sqlite3](https://github.com/mattn/go-sqlite3) database driver, **which wraps the native C library**.
+- This means that the native c code needs to be installed first
 
-
-### To install on OSX:
+### Install sqlite on OSX:
 
 1. Install [Homebrew](http://mxcl.github.com/homebrew/) if you don't already have it.
 2. Install pkg-config and sqlite3:
@@ -41,13 +44,15 @@ The booking app uses [go-sqlite3](https://github.com/mattn/go-sqlite3) database 
 $ brew install pkgconfig sqlite3
 ~~~
 
-### To install on Ubuntu:
+### Install sqlite on Ubuntu:
+```sh
+$ sudo apt-get install sqlite3 libsqlite3-dev
+```
 
-	$ sudo apt-get install sqlite3 libsqlite3-dev
-
-Once you have SQLite installed, it will be possible to run the booking app:
-
+Once SQLite is installed, it will be possible to run the booking app:
+```sh
 	$ revel run github.com/revel/examples/booking
+```
 
 ## Database / Gorp Plugin
 
