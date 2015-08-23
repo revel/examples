@@ -102,7 +102,7 @@ The booking app does quite a bit of validation.
 For example, here is the routine to validate a booking, from
 [models/booking.go](https://github.com/revel/samples/blob/master/booking/app/models/booking.go):
 
-{% highlight go %}
+```go
 func (booking Booking) Validate(v *revel.Validation) {
 	v.Required(booking.User)
 	v.Required(booking.Hotel)
@@ -118,7 +118,7 @@ func (booking Booking) Validate(v *revel.Validation) {
 		revel.MaxSize{70},
 	)
 }
-{% endhighlight %}
+```
 
 Revel applies the validation and records errors using the name of the
 validated variable (unless overridden).  For example, `booking.CheckInDate` is
