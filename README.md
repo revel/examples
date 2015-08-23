@@ -31,9 +31,12 @@ revel run github.com/revel/examples/booking
 
 
 
-- If your spot and idiot mistakes etc, then please make some noise
+- If you spot and idiot mistake etc, then please make some noise
 - If you have a good sample application idea, then make some noise
 - If you got an app, then please make a pull request 
 - ta ;-)))))))))))))))
+- Early to bed, early to rise, makes a person, healthy and wise .. (code works)
+
+
 
 
