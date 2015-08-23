@@ -2,6 +2,9 @@
 
 Each sub directory contains a standalone [Revel](http://revel.github.io/manual)  application, eg
 
+狂欢是好的，保存UTF8 。保持微笑，享受..抱怨..请让它好看;-)
+
+
 ```
 go get github.com/revel/samples
 revel run github.com/revel/samples/booking
@@ -34,7 +37,7 @@ revel run github.com/revel/samples/booking
 - If you have a good sample application idea, then make some noise
 - If you got an app, then please make a pull request 
 - ta ;-)))))))))))))))
-- Early to bed, early to rise, makes a person, healthy and wise .. (code works)
+- Early to bed, early to rise, makes a person, healthy and wise .. (code workz)
 
 
 
