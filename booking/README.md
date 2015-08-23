@@ -58,19 +58,18 @@ Once SQLite is installed, it will be possible to run the booking app:
 
 [`app/controllers/gorp.go`](https://github.com/revel/examples/blob/master/booking/app/controllers/gorp.go) defines `GorpPlugin`, which is a plugin that does a couple things:
 
-* OnAppStart: Uses the DB module to open a SQLite in-memory database, create the
-  User, Booking, and Hotel tables, and insert some test records.
-* BeforeRequest: Begins a transaction and stores the Transaction on the Controller
-* AfterRequest: Commits the transaction.  Panics if there was an error.
-* OnException: Rolls back the transaction.
+* **`OnAppStart`** -  Uses the DB module to open a SQLite in-memory database, create the `User`, `Booking`, and `Hotel` tables, and insert some test records.
+* **BeforeRequest** -  Begins a transaction and stores the Transaction on the Controller
+* **AfterRequest** -  Commits the transaction, or [panics](https://github.com/golang/go/wiki/PanicAndRecover) if there was an error.
+* **OnException** -  Rolls back the transaction
 
 
 ## Interceptors
 
 [`app/controllers/init.go`](https://github.com/revel/examples/blob/master/booking/app/controllers/init.go) 
-registers the [interceptors](../manual/interceptors.html) that run before every action:
+registers the [interceptors](../manual/interceptors.html) that runs before each action:
 
-{% highlight go %}
+```go
 func init() {
 	revel.OnAppStart(Init)
 	revel.InterceptMethod((*GorpController).Begin, revel.BEFORE)
@@ -79,12 +78,12 @@ func init() {
 	revel.InterceptMethod((*GorpController).Commit, revel.AFTER)
 	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)
 }
-{% endhighlight %}
+```
 
-As an example, `checkUser` looks up the username in the session and redirects
-the user to log in if they are not already.
+As an example, `checkUser` looks up the username in the `session` and `redirect`s
+the user to log in if they do not have a `session` cookie.
 
-{% highlight go %}
+```go
 func (c Hotels) checkUser() revel.Result {
 	if user := c.connected(); user == nil {
 		c.Flash.Error("Please log in first")
@@ -92,7 +91,7 @@ func (c Hotels) checkUser() revel.Result {
 	}
 	return nil
 }
-{% endhighlight %}
+```
 
 [Check out the user management code in app.go](https://github.com/revel/examples/blob/master/booking/app/controllers/app.go)
 
