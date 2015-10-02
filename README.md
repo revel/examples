@@ -3,7 +3,7 @@
 Each directory contains a revel application.
 
 ```
-go get github.com/revel/samples
+git clone https://github.com/revel/samples.git $GOPATH/src/github.com/revel/samples
 revel run github.com/revel/samples/booking
 ```
 
