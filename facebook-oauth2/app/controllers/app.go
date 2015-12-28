@@ -1,14 +1,15 @@
 package controllers
 
 import (
-	"code.google.com/p/goauth2/oauth"
 	"encoding/json"
 	"fmt"
-	"github.com/revel/revel"
-	"github.com/revel/samples/facebook-oauth2/app/models"
 	"net/http"
 	"net/url"
 	"strconv"
+
+	"github.com/revel/revel"
+	"github.com/revel/samples/facebook-oauth2/app/models"
+	"golang.org/x/oauth2"
 )
 
 type Application struct {
@@ -20,12 +21,15 @@ type Application struct {
 // You need to bind loisant.org to your machine with /etc/hosts to
 // test the application locally.
 
-var FACEBOOK = &oauth.Config{
-	ClientId:     "95341411595",
-	ClientSecret: "8eff1b488da7fe3426f9ecaf8de1ba54",
-	AuthURL:      "https://graph.facebook.com/oauth/authorize",
-	TokenURL:     "https://graph.facebook.com/oauth/access_token",
-	RedirectURL:  "http://loisant.org:9000/Application/Auth",
+var FACEBOOK = &oauth2.Config{
+	ClientID:     "943076975742162",
+	ClientSecret: "d3229ebe3501771344bb0f2db2324014",
+	Scopes:       []string{},
+	Endpoint: oauth2.Endpoint{
+		AuthURL:  "https://graph.facebook.com/oauth/authorize",
+		TokenURL: "https://graph.facebook.com/oauth/access_token",
+	},
+	RedirectURL: "http://loisant.org:9000/Application/Auth",
 }
 
 func (c Application) Index() revel.Result {
@@ -41,13 +45,13 @@ func (c Application) Index() revel.Result {
 		revel.INFO.Println(me)
 	}
 
-	authUrl := FACEBOOK.AuthCodeURL("foo")
+	authUrl := FACEBOOK.AuthCodeURL("state", oauth2.AccessTypeOffline)
 	return c.Render(me, authUrl)
 }
 
 func (c Application) Auth(code string) revel.Result {
-	t := &oauth.Transport{Config: FACEBOOK}
-	tok, err := t.Exchange(code)
+
+	tok, err := FACEBOOK.Exchange(oauth2.NoContext, code)
 	if err != nil {
 		revel.ERROR.Println(err)
 		return c.Redirect(Application.Index)
