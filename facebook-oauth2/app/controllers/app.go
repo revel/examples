@@ -10,6 +10,7 @@ import (
 	"github.com/revel/revel"
 	"github.com/revel/samples/facebook-oauth2/app/models"
 	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/facebook"
 )
 
 type Application struct {
@@ -25,11 +26,8 @@ var FACEBOOK = &oauth2.Config{
 	ClientID:     "943076975742162",
 	ClientSecret: "d3229ebe3501771344bb0f2db2324014",
 	Scopes:       []string{},
-	Endpoint: oauth2.Endpoint{
-		AuthURL:  "https://graph.facebook.com/oauth/authorize",
-		TokenURL: "https://graph.facebook.com/oauth/access_token",
-	},
-	RedirectURL: "http://loisant.org:9000/Application/Auth",
+	Endpoint:     facebook.Endpoint,
+	RedirectURL:  "http://loisant.org:9000/Application/Auth",
 }
 
 func (c Application) Index() revel.Result {
