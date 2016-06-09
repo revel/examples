@@ -53,7 +53,7 @@ func (c *Single) HandleUpload(avatar []byte) revel.Result {
 		return c.Redirect(routes.Single.Upload())
 	}
 
-	return c.RenderJson(FileInfo{
+	return c.RenderJSON(FileInfo{
 		ContentType: c.Params.Files["avatar"][0].Header.Get("Content-Type"),
 		Filename:    c.Params.Files["avatar"][0].Filename,
 		RealFormat:  format,
