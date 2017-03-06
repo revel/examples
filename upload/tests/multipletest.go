@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"path"
 
-	"github.com/revel/samples/upload/app/routes"
+	"github.com/revel/examples/upload/app/routes"
 
 	"github.com/revel/revel"
 	"github.com/revel/revel/testing"

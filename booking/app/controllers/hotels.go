@@ -1,12 +1,16 @@
 package controllers
 
 import (
+    "fmt"
+    "strings"
+    
 	"golang.org/x/crypto/bcrypt"
-	"fmt"
+	
 	"github.com/revel/revel"
-	"github.com/revel/samples/booking/app/models"
-	"github.com/revel/samples/booking/app/routes"
-	"strings"
+    
+	"github.com/revel/examples/booking/app/models"
+	"github.com/revel/examples/booking/app/routes"
+	
 )
 
 type Hotels struct {

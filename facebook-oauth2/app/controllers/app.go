@@ -7,10 +7,11 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/revel/revel"
-	"github.com/revel/samples/facebook-oauth2/app/models"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/facebook"
+    
+    "github.com/revel/revel"
+	"github.com/revel/examples/facebook-oauth2/app/models"
 )
 
 type Application struct {
