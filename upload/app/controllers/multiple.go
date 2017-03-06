@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/revel/samples/upload/app/routes"
+	"github.com/revel/examples/upload/app/routes"
 
 	"github.com/revel/revel"
 )

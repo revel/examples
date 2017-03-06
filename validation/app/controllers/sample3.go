@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"github.com/revel/revel"
-	"github.com/revel/samples/validation/app/models"
+	"github.com/revel/examples/validation/app/models"
 )
 
 type Sample3 struct {

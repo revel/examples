@@ -7,7 +7,7 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
-	"github.com/revel/samples/upload/app/routes"
+	"github.com/revel/examples/upload/app/routes"
 
 	"github.com/revel/revel"
 )

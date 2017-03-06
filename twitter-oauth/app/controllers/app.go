@@ -2,10 +2,14 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/mrjones/oauth"
-	"github.com/revel/revel"
-	"github.com/revel/samples/twitter-oauth/app/models"
 	"io/ioutil"
+    
+    "github.com/mrjones/oauth"
+	
+    "github.com/revel/revel"
+	
+    "github.com/revel/examples/twitter-oauth/app/models"
+    
 )
 
 var TWITTER = oauth.NewConsumer(
