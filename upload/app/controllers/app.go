@@ -19,7 +19,7 @@ type FileInfo struct {
 
 func (c *App) Before() revel.Result {
 	// Rendering useful info here.
-	c.RenderArgs["action"] = c.Controller.Action
+	c.ViewArgs["action"] = c.Controller.Action
 
 	return nil
 }
