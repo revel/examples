@@ -1,0 +1,15 @@
+#! ace
+= doctype html
+html lang=en
+  head
+    title Hello Ace
+    = css
+      h1 { color: blue; }
+  body
+    h1 {{.Msg}}
+    #container.wrapper
+      p..
+        Ace is an HTML template engine for Go.
+        This engine simplifies HTML coding in Go web application development.
+    = javascript
+      console.log('Welcome to Ace');

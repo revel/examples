@@ -102,3 +102,7 @@ func (c Application) Logout() revel.Result {
 	}
 	return c.Redirect(routes.Application.Index())
 }
+func (c Application) About() revel.Result {
+    c.RenderArgs["Msg"]="Revel Speaks"
+	return c.Render()
+}

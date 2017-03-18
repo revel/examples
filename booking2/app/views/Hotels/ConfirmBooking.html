@@ -32,12 +32,12 @@
     <strong>Total:</strong> {{booking.Total}} {# booking.formatCurrency('USD') #}
   </p>
   <p>
-    <strong>Check in date:</strong> {{booking.CheckInDate|date:"Y-m-d"}}
-    <input type="hidden" name="booking.CheckInDate" value="{{booking.CheckInDate|date:"Y-m-d"}}">
+    <strong>Check in date:</strong> {{booking.CheckInDate|date:"2006-01-02"}}
+    <input type="hidden" name="booking.CheckInDate" value="{{booking.CheckInDate|date:"2006-01-02"}}">
   </p>
   <p>
-    <strong>Check out date:</strong> {{booking.CheckOutDate|date:"Y-m-d"}}
-    <input type="hidden" name="booking.CheckOutDate" value="{{booking.CheckOutDate|date:"Y-m-d"}}">
+    <strong>Check out date:</strong> {{booking.CheckOutDate|date:"2006-01-02"}}
+    <input type="hidden" name="booking.CheckOutDate" value="{{booking.CheckOutDate|date:"2006-01-02"}}">
   </p>
   <p>
     <strong>Credit card #:</strong> {{booking.CardNumber}}

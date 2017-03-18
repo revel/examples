@@ -6,6 +6,7 @@ module:testrunner
 module:jobs
 
 GET     /                                       Application.Index
+GET     /about                                  Application.About
 GET     /hotels                                 Hotels.Index
 GET     /hotels/list                            Hotels.List
 GET     /hotels/:id                             Hotels.Show
