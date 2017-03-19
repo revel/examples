@@ -71,7 +71,7 @@ func setuser(c *revel.Controller) revel.Result {
 		user = models.NewUser()
 		c.Session["uid"] = fmt.Sprintf("%d", user.Uid)
 	}
-	c.RenderArgs["user"] = user
+	c.ViewArgs["user"] = user
 	return nil
 }
 
@@ -80,5 +80,5 @@ func init() {
 }
 
 func (c Application) connected() *models.User {
-	return c.RenderArgs["user"].(*models.User)
+	return c.ViewArgs["user"].(*models.User)
 }
