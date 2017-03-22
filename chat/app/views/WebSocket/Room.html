@@ -6,38 +6,38 @@
 
 <div id="thread">
   <script type="text/html" id="message_tmpl">
-    <% if(event.Type == 'message') { %>
+    {{raw "<%"}} if(event.Type == 'message') { %>
       <div class="message <%= event.User == '{{.user}}' ? 'you' : '' %>">
-        <h2><%= event.User %></h2>
+        <h2>{{raw "<%"}}= event.User %></h2>
         <p>
-          <%= event.Text %>
+          {{raw "<%"}}= event.Text %>
         </p>
       </div>
-    <% } %>
-    <% if(event.Type == 'join') { %>
+    {{raw "<%"}} } %>
+    {{raw "<%"}} if(event.Type == 'join') { %>
       <div class="message notice">
         <h2></h2>
         <p>
-          <%= event.User %> joined the room
+          {{raw "<%"}}= event.User %> joined the room
         </p>
       </div>
-    <% } %>
-    <% if(event.Type == 'leave') { %>
+    {{raw "<%"}} } %>
+    {{raw "<%"}} if(event.Type == 'leave') { %>
       <div class="message notice">
         <h2></h2>
         <p>
-          <%= event.User %> left the room
+          {{raw "<%"}}= event.User %> left the room
         </p>
       </div>
-    <% } %>
-    <% if(event.Type == 'quit') { %>
+    {{raw "<%"}} } %>
+    {{raw "<%"}} if(event.Type == 'quit') { %>
       <div class="message important">
         <h2></h2>
         <p>
           You are now disconnected!
         </p>
       </div>
-    <% } %>
+    {{raw "<%"}} } %>
   </script>
 </div>
 
