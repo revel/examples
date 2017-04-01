@@ -33,12 +33,12 @@ func (c LongPolling) WaitMessages(lastReceived int) revel.Result {
 
 	// If we found one, grand.
 	if len(events) > 0 {
-		return c.RenderJson(events)
+		return c.RenderJSON(events)
 	}
 
 	// Else, wait for something new.
 	event := <-subscription.New
-	return c.RenderJson([]chatroom.Event{event})
+	return c.RenderJSON([]chatroom.Event{event})
 }
 
 func (c LongPolling) Leave(user string) revel.Result {

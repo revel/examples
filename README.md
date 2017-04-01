@@ -1,5 +1,7 @@
 # Example Revel Applications
 
+[![Build Status](https://secure.travis-ci.org/revel/examples.svg?branch=master)](http://travis-ci.org/revel/examples)
+
 Each directory contains a revel application.
 
 ```

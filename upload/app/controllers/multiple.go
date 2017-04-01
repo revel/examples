@@ -39,7 +39,7 @@ func (c *Multiple) HandleUpload() revel.Result {
 		}
 	}
 
-	return c.RenderJson(map[string]interface{}{
+	return c.RenderJSON(map[string]interface{}{
 		"Count":  len(files),
 		"Files":  filesInfo,
 		"Status": "Successfully uploaded",

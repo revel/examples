@@ -16,14 +16,14 @@ type Application struct {
 
 func (c Application) AddUser() revel.Result {
 	if user := c.connected(); user != nil {
-		c.RenderArgs["user"] = user
+		c.ViewArgs["user"] = user
 	}
 	return nil
 }
 
 func (c Application) connected() *models.User {
-	if c.RenderArgs["user"] != nil {
-		return c.RenderArgs["user"].(*models.User)
+	if c.ViewArgs["user"] != nil {
+		return c.ViewArgs["user"].(*models.User)
 	}
 	if username, ok := c.Session["user"]; ok {
 		return c.getUser(username)
