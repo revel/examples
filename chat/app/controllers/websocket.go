@@ -1,12 +1,9 @@
 package controllers
 
 import (
-    
-	"golang.org/x/net/websocket"
-	
-    "github.com/revel/revel"
-	
-    "github.com/revel/examples/chat/app/chatroom"
+	"github.com/revel/revel"
+
+	"github.com/revel/examples/chat/app/chatroom"
 )
 
 type WebSocket struct {
@@ -17,7 +14,8 @@ func (c WebSocket) Room(user string) revel.Result {
 	return c.Render(user)
 }
 
-func (c WebSocket) RoomSocket(user string, ws *websocket.Conn) revel.Result {
+func (c WebSocket) RoomSocket(user string, ws revel.ServerWebSocket) revel.Result {
+    println("**** websocket ",ws)
 	// Join the room.
 	subscription := chatroom.Subscribe()
 	defer subscription.Cancel()
@@ -27,7 +25,7 @@ func (c WebSocket) RoomSocket(user string, ws *websocket.Conn) revel.Result {
 
 	// Send down the archive.
 	for _, event := range subscription.Archive {
-		if websocket.JSON.Send(ws, &event) != nil {
+		if ws.MessageSendJson(&event) != nil {
 			// They disconnected
 			return nil
 		}
@@ -39,7 +37,7 @@ func (c WebSocket) RoomSocket(user string, ws *websocket.Conn) revel.Result {
 	go func() {
 		var msg string
 		for {
-			err := websocket.Message.Receive(ws, &msg)
+			err := ws.MessageReceiveJson(&msg)
 			if err != nil {
 				close(newMessages)
 				return
@@ -52,7 +50,7 @@ func (c WebSocket) RoomSocket(user string, ws *websocket.Conn) revel.Result {
 	for {
 		select {
 		case event := <-subscription.New:
-			if websocket.JSON.Send(ws, &event) != nil {
+			if ws.MessageSendJson(&event) != nil {
 				// They disconnected.
 				return nil
 			}
