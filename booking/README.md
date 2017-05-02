@@ -65,6 +65,7 @@ Once you have SQLite installed, it will be possible to run the booking app:
 [`app/controllers/init.go`](https://github.com/revel/examples/blob/master/booking/app/controllers/init.go) 
 registers the [interceptors](../manual/interceptors.html) that run before every action:
 
+```
 {% highlight go %}
 func init() {
 	revel.OnAppStart(Init)
@@ -75,6 +76,7 @@ func init() {
 	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)
 }
 {% endhighlight %}
+```
 
 As an example, `checkUser` looks up the username in the session and redirects
 the user to log in if they are not already.
