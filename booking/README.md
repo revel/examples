@@ -81,6 +81,7 @@ func init() {
 As an example, `checkUser` looks up the username in the session and redirects
 the user to log in if they are not already.
 
+```
 {% highlight go %}
 func (c Hotels) checkUser() revel.Result {
 	if user := c.connected(); user == nil {
@@ -90,6 +91,7 @@ func (c Hotels) checkUser() revel.Result {
 	return nil
 }
 {% endhighlight %}
+```
 
 [Check out the user management code in app.go](https://github.com/revel/examples/blob/master/booking/app/controllers/app.go)
 
