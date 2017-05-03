@@ -5,14 +5,14 @@ The `Chat` app demonstrates ([browse the source](https://github.com/revel/sample
 * Using channels to implement a chat room with a [publish-subscribe](http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern) model.
 * Using both `Comet` and [Websockets](../manual/websockets.html)
 
-Here are the key contents of the app:
+Here's a quick summary of the structure:
 ```
 	chat/app/
 		chatroom	       # Chat room routines
 			chatroom.go
 
 		controllers
-			app.go         # The welcome screen, allowing user to pick a technology
+			app.go         # The login screen, allowing user to choose from supported technologies
 			refresh.go     # Handlers for the "Active Refresh" chat demo
 			longpolling.go # Handlers for the "Long polling" ("Comet") chat demo
 			websocket.go   # Handlers for the "Websocket" chat demo
