@@ -3,7 +3,7 @@ Twitter OAuth with Revel example
 
 The `twitter-oauth` app uses the `mrjones/oauth` library to demonstrate:
 
-* How to do the `oauth` dance to authenticate your app to use a `Twitter` account.
+* How to do the `OAuth` to authenticate your app to use a `Twitter` account.
 * Fetching mentions for that Twitter account.
 * Tweeting on behalf of that Twitter account.
 
