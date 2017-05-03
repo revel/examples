@@ -44,7 +44,7 @@ install:
   - git clone -b $REVEL_BRANCH git://github.com/revel/cmd ../cmd/
   - git clone -b $REVEL_BRANCH git://github.com/revel/config ../config/
   - git clone -b $REVEL_BRANCH git://github.com/revel/cron ../cron/
-  - git clone -b $REVEL_BRANCH git://github.com/revel/examples ../examples/
+#  - git clone -b $REVEL_BRANCH git://github.com/revel/examples ../examples/
   - go get -v github.com/revel/revel/...
   - go get -v github.com/revel/cmd/revel
 
