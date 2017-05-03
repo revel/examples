@@ -2,9 +2,9 @@
 
 [![Build Status](https://secure.travis-ci.org/revel/examples.svg?branch=master)](http://travis-ci.org/revel/examples)
 
-Each sub directory contains a standalone [Revel](http://revel.github.io/manual)  application, eg
+Each directory contains a standalone [Revel](http://revel.github.io/manual)  application, eg
 
-狂欢是好的，保存UTF8 。保持微笑，享受..抱怨..请让它好看;-)
+狂欢是好的，保存UTF8 。保持微笑，享受..抱怨..请让它好看 
 
 
 ```
@@ -34,11 +34,9 @@ revel run github.com/revel/examples/booking
 
 
 
-- If you spot and idiot mistake etc, then please make some noise
-- If you have a good sample application idea, then make some noise
+- If you spot a mistake etc, then let us know
+- If you have a good sample application idea, then let us know
 - If you got an app, then please make a pull request 
-- ta ;-)))))))))))))))
-- Early to bed, early to rise, makes a person, healthy and wise .. (code workz)
 
 
 
