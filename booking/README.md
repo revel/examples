@@ -1,7 +1,7 @@
 Hotel Booking Example
 ===============================
 
-The Hotel Booking sample app demonstrates ([browse the source](https://github.com/revel/samples/tree/master/booking)):
+The Hotel Booking example app demonstrates ([browse the source](https://github.com/revel/examples/tree/master/booking)):
 
 * Using an SQL (SQLite) database and configuring the Revel DB module.
 * Using the third party [GORP](https://github.com/coopernurse/gorp) *ORM-ish* library
@@ -9,7 +9,7 @@ The Hotel Booking sample app demonstrates ([browse the source](https://github.co
 * Using [validation](../manual/validation) and displaying inline errors
 
 
-Here's a quick summary of the files and purpose
+Here's a quick summary of the structure
 ```
 	booking/app/
 		models		   # Structs and validation.
@@ -28,12 +28,11 @@ Here's a quick summary of the files and purpose
 ```
 
 # Database Install and Setup
-This example used [sqlite](https://www.sqlite.org/), but u can easily adopt code to your needs with mysql, postgres, et all.
+This example used [sqlite](https://www.sqlite.org/), (Alternatively can use mysql, postgres, etc.)
 
 ## sqlite Installation
 
-- The booking app uses [go-sqlite3](https://github.com/mattn/go-sqlite3) database driver, **which wraps the native C library**.
-- This means that the native c code needs to be installed first
+- The booking app uses [go-sqlite3](https://github.com/mattn/go-sqlite3) database driver, which depends on the C library
 
 ### Install sqlite on OSX:
 
@@ -127,7 +126,7 @@ the validation context under the key "booking.CheckInDate".
 
 Subsequently, the
 [Hotels/Book.html](https://github.com/revel/examples/blob/master/booking/app/views/Hotels/Book.html)
-template can easily access them using the [`field`](../manual/templates.html#field) helper:
+template can access them using the [`field`](../manual/templates.html#field) helper:
 
 {% capture ex %}{% raw %}
 {{with $field := field "booking.CheckInDate" .}}
