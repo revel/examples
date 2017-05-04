@@ -54,9 +54,9 @@ func init() {
 // not sure if it can go in the same filter or not
 var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 	// Add some common security headers
-	c.Response.Out.Header().Add("X-Frame-Options", "SAMEORIGIN")
-	c.Response.Out.Header().Add("X-XSS-Protection", "1; mode=block")
-	c.Response.Out.Header().Add("X-Content-Type-Options", "nosniff")
+	c.Response.SetHttpHeader("X-Frame-Options", "SAMEORIGIN")
+	c.Response.SetHttpHeader("X-XSS-Protection", "1; mode=block")
+	c.Response.SetHttpHeader("X-Content-Type-Options", "nosniff")
 
 	fc[0](c, fc[1:]) // Execute the next filter stage.
 }
