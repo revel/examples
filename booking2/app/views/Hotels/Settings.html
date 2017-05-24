@@ -1,0 +1,27 @@
+{%set title="Settings"%}
+{%include "header.html" %}
+
+<h1>Change your password</h1>
+
+<form method="POST" action="{%url "Hotels.SaveSettings"%}">
+  {%with field =  "password"|field %}
+    <p class="{{field.ErrorClass}}">
+      <strong>Password:</strong>
+      <input type="password" name="{{field.Name}}" size="16"> *
+      <span class="error">{{field.Error}}</span>
+    </p>
+  {%endwith%}
+  {%with field = "verifyPassword"|field %}
+    <p class="{{field.ErrorClass}}">
+      <strong>Verify password:</strong>
+      <input type="password" name="{{field.Name}}" size="16"> *
+      <span class="error">{{field.Error}}</span>
+    </p>
+  {%endwith%}
+
+  <p class="buttons">
+    <input type="submit" value="Save"> <a href="{%url "Hotels.Index"%}">Cancel</a>
+  </p>
+</form>
+
+{%include "footer.html" %}

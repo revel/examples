@@ -1,19 +1,15 @@
 package controllers
 
 import (
-	
 	"database/sql"
-    
-    "golang.org/x/crypto/bcrypt"
-    
+	"time"
+
 	"github.com/go-gorp/gorp"
 	_ "github.com/mattn/go-sqlite3"
-    
-	r "github.com/revel/revel"
 	"github.com/revel/modules/db/app"
-	
-    "github.com/revel/examples/booking/app/models"
-    "time"
+	r "github.com/revel/revel"
+	"github.com/revel/examples/booking2/app/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -77,6 +73,7 @@ func InitDB() {
 			panic(err)
 		}
 	}
+
 	bookings := []*models.Booking{
 		&models.Booking{0, demoUser.UserId, hotels[0].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
 		&models.Booking{0, demoUser.UserId, hotels[1].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
