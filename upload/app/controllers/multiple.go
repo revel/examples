@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"github.com/revel/examples/upload/app/routes"
-
 	"github.com/revel/revel"
 )
 
@@ -26,7 +24,7 @@ func (c *Multiple) HandleUpload() revel.Result {
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
 		c.FlashParams()
-		return c.Redirect(routes.Multiple.Upload())
+		return c.Redirect((*Multiple).Upload)
 	}
 
 	// Prepare result.
