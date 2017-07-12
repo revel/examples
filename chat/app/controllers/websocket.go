@@ -18,6 +18,11 @@ func (c WebSocket) Room(user string) revel.Result {
 }
 
 func (c WebSocket) RoomSocket(user string, ws *websocket.Conn) revel.Result {
+	// Make sure the websocket is valid.
+	if ws == nil {
+		return nil	
+	}
+	
 	// Join the room.
 	subscription := chatroom.Subscribe()
 	defer subscription.Cancel()
