@@ -22,5 +22,10 @@ func init() {
 		revel.InterceptMethod((*gorm.GormController).Begin, revel.BEFORE)
 		revel.InterceptMethod((*gorm.GormController).Commit, revel.AFTER)
 		revel.InterceptMethod((*gorm.GormController).Rollback, revel.FINALLY)
+
+		// Transaccional
+		// revel.InterceptMethod((*gorm.GormTransactionController).Begin, revel.BEFORE)
+		// revel.InterceptMethod((*gorm.GormTransactionController).Commit, revel.AFTER)
+		// revel.InterceptMethod((*gorm.GormTransactionController).Rollback, revel.FINALLY)
 	})
 }
