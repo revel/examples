@@ -9,6 +9,8 @@ import (
 type App struct {
 	*revel.Controller
 	gorm.GormController
+	// Transactional
+	// gorm.GormTransactionController
 }
 
 func (c App) Index() revel.Result {
