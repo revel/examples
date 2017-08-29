@@ -2,13 +2,12 @@ package controllers
 
 import (
 	"github.com/revel/revel"
-	"modules/gorm/app"
-	"testgorm/app/models"
+	gormc "github.com/revel/modules/orm/gorm/app/controllers"
+	"github.com/revel/examples/orm/gorm/app/models"
 )
 
 type App struct {
-	*revel.Controller
-	gorm.GormController
+	gormc.TxnController
 }
 
 func (c App) Index() revel.Result {
