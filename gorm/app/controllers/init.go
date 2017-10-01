@@ -1,9 +1,10 @@
 package controllers
 
 import (
+	"github.com/revel/examples/gorm/app/models"
+
+	"github.com/revel/modules/gorm/app"
 	"github.com/revel/revel"
-	"modules/gorm/app"
-	"testgorm/app/models"
 )
 
 func InitializeDB() {
