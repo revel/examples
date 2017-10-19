@@ -15,32 +15,32 @@
 
     {{with $field := field "user.Username" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">Desired username :</label>
-			<input type="text" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">Desired username :</label>
+			<input type="text" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
 
     {{with $field := field "user.FirstName" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">First name :</label>
-			<input type="text" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">First name :</label>
+			<input type="text" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
 
     {{with $field := field "user.LastName" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">Last name :</label>
-			<input type="text" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">Last name :</label>
+			<input type="text" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
 
     {{with $field := field "user.Age" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">Age :</label>
-			<input type="text" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">Age :</label>
+			<input type="text" id="{{$field.ID}}" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
@@ -51,16 +51,16 @@
 
     {{with $field := field "user.Password" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">Password :</label>
-			<input id="{{$field.Id}}" type="password" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">Password :</label>
+			<input id="{{$field.ID}}" type="password" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
 
     {{with $field := field "user.PasswordConfirm" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">Confirm password :</label>
-			<input id="{{$field.Id}}" type="password" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">Confirm password :</label>
+			<input id="{{$field.ID}}" type="password" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
@@ -71,16 +71,16 @@
 
     {{with $field := field "user.Email" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">Email address :</label>
-			<input id="{{$field.Id}}" type="text" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">Email address :</label>
+			<input id="{{$field.ID}}" type="text" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
 
     {{with $field := field "user.EmailConfirm" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">Confirm email address :</label>
-			<input id="{{$field.Id}}" type="text" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">Confirm email address :</label>
+			<input id="{{$field.ID}}" type="text" name="{{$field.Name}}" value="{{$field.Flash}}" class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
@@ -96,8 +96,8 @@
 
     {{with $field := field "user.TermsOfUse" .}}
 		<div class="field">
-			<label for="{{$field.Id}}">I accept terms of use :</label>
-			<input id="{{$field.Id}}" type="checkbox" value="true" name="{{$field.Name}}" {{if $field.Flash}}checked="checked"{{end}} class="{{$field.ErrorClass}}"/>
+			<label for="{{$field.ID}}">I accept terms of use :</label>
+			<input id="{{$field.ID}}" type="checkbox" value="true" name="{{$field.Name}}" {{if $field.Flash}}checked="checked"{{end}} class="{{$field.ErrorClass}}"/>
 			<span class="error">{{$field.Error}}</span>
 		</div>
 		{{end}}
