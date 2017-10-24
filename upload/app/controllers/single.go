@@ -7,8 +7,6 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
-	"github.com/revel/examples/upload/app/routes"
-
 	"github.com/revel/revel"
 )
 
@@ -50,7 +48,7 @@ func (c *Single) HandleUpload(avatar []byte) revel.Result {
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
 		c.FlashParams()
-		return c.Redirect(routes.Single.Upload())
+		return c.Redirect((*Single).Upload)
 	}
 
 	return c.RenderJSON(FileInfo{

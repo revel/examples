@@ -17,6 +17,7 @@ func (c Sample1) HandleSubmit(
 	age int,
 	password, passwordConfirm, email, emailConfirm string,
 	termsOfUse bool) revel.Result {
+		revel.FilterController()
 
 	// Validation rules
 	c.Validation.Required(username).Message("Username is required.")

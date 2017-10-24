@@ -2,10 +2,10 @@ package models
 
 import (
 	"fmt"
-	"github.com/go-gorp/gorp"
 	"github.com/revel/revel"
 	"regexp"
 	"time"
+	"gopkg.in/gorp.v2"
 )
 
 type Booking struct {
@@ -92,10 +92,12 @@ func (b *Booking) PostGet(exe gorp.SqlExecutor) error {
 		err error
 	)
 
+	fmt.Printf("Get post %#v\n",b)
 	obj, err = exe.Get(User{}, b.UserId)
 	if err != nil {
 		return fmt.Errorf("Error loading a booking's user (%d): %s", b.UserId, err)
 	}
+
 	b.User = obj.(*User)
 
 	obj, err = exe.Get(Hotel{}, b.HotelId)

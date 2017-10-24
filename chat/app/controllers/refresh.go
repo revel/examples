@@ -4,7 +4,6 @@ import (
 	"github.com/revel/revel"
     
 	"github.com/revel/examples/chat/app/chatroom"
-	"github.com/revel/examples/chat/app/routes"
 )
 
 type Refresh struct {
@@ -13,7 +12,7 @@ type Refresh struct {
 
 func (c Refresh) Index(user string) revel.Result {
 	chatroom.Join(user)
-	return c.Redirect(routes.Refresh.Room(user))
+	return c.Redirect((*Refresh).Room, user)
 }
 
 func (c Refresh) Room(user string) revel.Result {
@@ -30,7 +29,7 @@ func (c Refresh) Room(user string) revel.Result {
 
 func (c Refresh) Say(user, message string) revel.Result {
 	chatroom.Say(user, message)
-	return c.Redirect(routes.Refresh.Room(user))
+	return c.Redirect((*Refresh).Room, user)
 }
 
 func (c Refresh) Leave(user string) revel.Result {

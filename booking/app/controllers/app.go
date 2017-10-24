@@ -6,12 +6,15 @@ import (
 	
     "github.com/revel/revel"
     
+	"github.com/revel/modules/orm/gorp/app/controllers"
 	"github.com/revel/examples/booking/app/models"
 	"github.com/revel/examples/booking/app/routes"
+	"database/sql"
+	"fmt"
 )
 
 type Application struct {
-	GorpController
+	gorpController.Controller
 }
 
 func (c Application) AddUser() revel.Result {
@@ -31,15 +34,18 @@ func (c Application) connected() *models.User {
 	return nil
 }
 
-func (c Application) getUser(username string) *models.User {
-	users, err := c.Txn.Select(models.User{}, `select * from User where Username = ?`, username)
+func (c Application) getUser(username string) (user *models.User) {
+	user = &models.User{}
+	fmt.Println("get user",username,c.Txn)
+
+	err := c.Txn.SelectOne(user, c.Db.SqlStatementBuilder.Select("*").From("User").Where("Username=?",username))
 	if err != nil {
-		panic(err)
-	}
-	if len(users) == 0 {
+		if err!=sql.ErrNoRows {
+			c.Log.Error("Failed to find user")
+		}
 		return nil
 	}
-	return users[0].(*models.User)
+	return
 }
 
 func (c Application) Index() revel.Result {
@@ -57,7 +63,7 @@ func (c Application) Register() revel.Result {
 func (c Application) SaveUser(user models.User, verifyPassword string) revel.Result {
 	c.Validation.Required(verifyPassword)
 	c.Validation.Required(verifyPassword == user.Password).
-		Message("Password does not match")
+		MessageKey("Password does not match")
 	user.Validate(c.Validation)
 
 	if c.Validation.HasErrors() {
