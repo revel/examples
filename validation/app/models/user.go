@@ -30,6 +30,6 @@ func (user *User) Validate(v *revel.Validation) {
 	v.Email(user.Email)
 	v.Required(user.EmailConfirm)
 	v.Required(user.EmailConfirm == user.Email).
-		Message("The email addresses do not match")
+		MessageKey("The email addresses do not match")
 	v.Required(user.TermsOfUse)
 }
