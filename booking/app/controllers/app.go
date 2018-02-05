@@ -29,7 +29,7 @@ func (c Application) connected() *models.User {
 		return c.ViewArgs["user"].(*models.User)
 	}
 	if username, ok := c.Session["user"]; ok {
-		return c.getUser(username)
+		return c.getUser(username.(string))
 	}
 	return nil
 }

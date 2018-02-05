@@ -4,6 +4,7 @@
 
 module:testrunner
 module:jobs
+module:static
 
 GET     /                                       Application.Index
 GET     /hotels                                 Hotels.Index
@@ -21,6 +22,8 @@ GET     /logout                                 Application.Logout
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath                       Static.Serve("public")
+GET     /dir/                                   Static.ServeDir("public")
+GET     /dir/*filepath                          Static.ServeDir("public")
 GET     /favicon.ico                            Static.Serve("public/img","favicon.png")
 
 # Catch all
