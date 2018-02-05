@@ -68,5 +68,6 @@ func (c WebSocket) RoomSocket(user string, ws revel.ServerWebSocket) revel.Resul
 			chatroom.Say(user, msg)
 		}
 	}
+
 	return nil
 }
