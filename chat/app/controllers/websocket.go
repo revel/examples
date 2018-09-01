@@ -42,7 +42,7 @@ func (c WebSocket) RoomSocket(user string, ws revel.ServerWebSocket) revel.Resul
 		var msg string
 		for {
 			err := ws.MessageReceiveJSON(&msg)
-			if err != nil {
+			if err == nil {
 				close(newMessages)
 				return
 			}
