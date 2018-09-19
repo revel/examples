@@ -71,7 +71,7 @@ func (b Booking) Description() string {
 }
 
 func (b Booking) String() string {
-	return fmt.Sprintf("Booking(%s,%s)", b.User, b.Hotel)
+	return fmt.Sprintf("Booking(%s,%s)", b.User, b.Hotel.Name)
 }
 
 // These hooks work around two things:
@@ -107,10 +107,10 @@ func (b *Booking) PostGet(exe gorp.SqlExecutor) error {
 	b.Hotel = obj.(*Hotel)
 
 	if b.CheckInDate, err = time.Parse(SQL_DATE_FORMAT, b.CheckInStr); err != nil {
-		return fmt.Errorf("Error parsing check in date '%s':", b.CheckInStr, err)
+		return fmt.Errorf("Error parsing check in date '%s' %s:", b.CheckInStr, err.Error())
 	}
 	if b.CheckOutDate, err = time.Parse(SQL_DATE_FORMAT, b.CheckOutStr); err != nil {
-		return fmt.Errorf("Error parsing check out date '%s':", b.CheckOutStr, err)
+		return fmt.Errorf("Error parsing check out date '%s' %s:", b.CheckOutStr, err.Error())
 	}
 	return nil
 }

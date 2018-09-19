@@ -9,7 +9,12 @@ type Application struct {
 }
 
 func (c Application) Index() revel.Result {
+
 	return c.Render()
+}
+
+func (c Application) Destroy() {
+	c.Controller.Destroy()
 }
 
 func (c Application) EnterDemo(user, demo string) revel.Result {
