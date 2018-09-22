@@ -1,0 +1,34 @@
+{%if hotels%}
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>City, State</th>
+      <th width="8%">Zip</th>
+      <th width="13%">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for hotel in hotels%}
+    <tr>
+      <td>{{hotel.Name}}</td>
+      <td>{{hotel.Address}}</td>
+      <td>{{hotel.City}}, {{hotel.State}}, {{hotel.Country}}</td>
+      <td>{{hotel.Zip}}</td>
+      <td>
+        <a href="{%url "Hotels.Show" hotel.HotelId%}">View Hotel</a>
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+<p>
+  <a id="nextPage" href="{{hotel.nextPage}}">More results</a>
+</p>
+
+{%else%}
+<p>
+  No more results
+</p>
+{%endif%}
