@@ -1,7 +1,6 @@
 language: go
 
 go:
-  - "1.8.7"
   - "1.9"
   - "1.10"
   - "1.11"
@@ -45,8 +44,8 @@ install:
   - git clone -b $REVEL_BRANCH git://github.com/revel/cmd ../cmd/
   - git clone -b $REVEL_BRANCH git://github.com/revel/config ../config/
   - git clone -b $REVEL_BRANCH git://github.com/revel/cron ../cron/
-  - go get -v github.com/revel/revel/...
-  - go get -v github.com/revel/cmd/revel
+  - go get -t -v github.com/revel/revel/...
+  - go get -t -v github.com/revel/cmd/revel
 
 script:
   # Commented out persona test sample, since persona.org gonna be shutdown.
