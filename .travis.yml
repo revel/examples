@@ -55,6 +55,8 @@ script:
   # - revel test github.com/revel/examples/persona
   # Build & run the sample apps
   - revel test -v -a github.com/revel/examples/booking
+  - revel test -v -a github.com/revel/examples/booking -m dev-fast
+  - revel test -v -a github.com/revel/examples/booking2
   - go test -v github.com/revel/examples/booking/app/...  -args -revel.importPath=github.com/revel/examples/booking
   - revel test -v -a github.com/revel/examples/chat
   - revel test -v -a github.com/revel/examples/facebook-oauth2

@@ -1,0 +1,37 @@
+{% set title = "Register" %}
+{% include "header.html" %}
+
+<h1>Register:</h1>
+
+<form action="{%url "Application.SaveUser"%}" method="POST">
+  {%with field = "user.Username"|field %}
+    <p class="{{field.ErrorClass}}">
+      <strong>Username:</strong>
+      <input type="text" name="{{field.Name}}" size="16" value="{{field.Flash}}"> *
+      <span class="error">{{field.Error}}</span>
+    </p>
+  {% endwith %}
+  {% with field = "user.Name"|field %}
+    <p class="{{field.ErrorClass}}">
+      <strong>Real name:</strong> <input type="text" name="{{field.Name}}" size="16" value="{{field.Flash}}"> *
+      <span class="error">{{field.Error}}</span>
+    </p>
+  {% endwith %}
+  {% with field = "user.Password"|field %}
+    <p class="{{field.ErrorClass}}">
+      <strong>Password:</strong> <input type="password" name="{{field.Name}}" size="16" value="{{field.Flash}}"> *
+      <span class="error">{{field.Error}}</span>
+    </p>
+  {% endwith %}
+  {% with field = "verifyPassword"|field %}
+    <p class="{{field.ErrorClass}}">
+      <strong>Verify password:</strong> <input type="password" name="{{field.Name}}" size="16" value="{{field.Flash}}"> *
+      <span class="error">{{field.Error}}</span>
+    </p>
+  {% endwith %}
+  <p class="buttons">
+    <input type="submit" value="Register"> <a href="{%url "Application.Index"%}">Cancel</a>
+  </p>
+</form>
+
+{%include "footer.html" %}
