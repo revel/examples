@@ -1,14 +1,18 @@
 package controllers
 
 import (
-	"github.com/revel/revel"
-	"github.com/revel/examples/booking2/app/models"
-	"github.com/revel/examples/booking2/app/routes"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/revel/revel"
+
+	"database/sql"
+	"github.com/revel/examples/booking/app/models"
+	"github.com/revel/examples/booking/app/routes"
+	"github.com/revel/modules/orm/gorp/app/controllers"
 )
 
 type Application struct {
-	GorpController
+	gorpController.Controller
 }
 
 func (c Application) AddUser() revel.Result {
@@ -23,20 +27,29 @@ func (c Application) connected() *models.User {
 		return c.ViewArgs["user"].(*models.User)
 	}
 	if username, ok := c.Session["user"]; ok {
-		return c.getUser(username)
+		return c.getUser(username.(string))
 	}
 	return nil
 }
 
-func (c Application) getUser(username string) *models.User {
-	users, err := c.Txn.Select(models.User{}, `select * from User where Username = ?`, username)
-	if err != nil {
-		panic(err)
+func (c Application) getUser(username string) (user *models.User) {
+	user = &models.User{}
+	_,  err := c.Session.GetInto("fulluser", user, false)
+	if user.Username == username {
+		return user
 	}
-	if len(users) == 0 {
+
+	err = c.Txn.SelectOne(user, c.Db.SqlStatementBuilder.Select("*").From("User").Where("Username=?", username))
+	if err != nil {
+		if err != sql.ErrNoRows {
+			//c.Txn.Select(user, c.Db.SqlStatementBuilder.Select("*").From("User").Limit(1))
+			count, _ := c.Txn.SelectInt(c.Db.SqlStatementBuilder.Select("count(*)").From("User"))
+			c.Log.Error("Failed to find user", "user", username, "error",err, "count", count)
+		}
 		return nil
 	}
-	return users[0].(*models.User)
+	c.Session["fulluser"] = user
+	return
 }
 
 func (c Application) Index() revel.Result {
@@ -54,7 +67,7 @@ func (c Application) Register() revel.Result {
 func (c Application) SaveUser(user models.User, verifyPassword string) revel.Result {
 	c.Validation.Required(verifyPassword)
 	c.Validation.Required(verifyPassword == user.Password).
-		Message("Password does not match")
+		MessageKey("Password does not match")
 	user.Validate(c.Validation)
 
 	if c.Validation.HasErrors() {

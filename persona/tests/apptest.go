@@ -94,7 +94,7 @@ func (t *AppTest) EmailWithAssertion(audience string) PersonaTestUser {
 	req.Send()
 
 	// Check whether response status is OK.
-	revel.TRACE.Printf("PERSONA TESTING: Response of testing server is %q", t.ResponseBody)
+	revel.RevelLog.Debugf("PERSONA TESTING: Response of testing server is %q", t.ResponseBody)
 	t.AssertOk()
 
 	// Parsing the response from server.

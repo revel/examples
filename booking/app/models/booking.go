@@ -92,7 +92,6 @@ func (b *Booking) PostGet(exe gorp.SqlExecutor) error {
 		err error
 	)
 
-	fmt.Printf("Get post %#v\n",b)
 	obj, err = exe.Get(User{}, b.UserId)
 	if err != nil {
 		return fmt.Errorf("Error loading a booking's user (%d): %s", b.UserId, err)

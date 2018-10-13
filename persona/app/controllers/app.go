@@ -34,7 +34,7 @@ func (r LoginResult) Apply(req *revel.Request, resp *revel.Response) {
 }
 
 func (c App) Index() revel.Result {
-	email := c.Session["email"]
+	email := c.Session["email"].(string)
 	return c.Render(email)
 }
 

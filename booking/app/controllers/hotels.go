@@ -27,6 +27,7 @@ func (c Hotels) checkUser() revel.Result {
 }
 
 func (c Hotels) Index() revel.Result {
+	c.Log.Info("Fetching index")
 	var bookings []*models.Booking
 	_, err := c.Txn.Select(&bookings,
 		c.Db.SqlStatementBuilder.Select("*").
