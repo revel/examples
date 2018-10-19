@@ -68,7 +68,6 @@ NEXT_TEST:
 // this tests the speed of the command line utility to process the source of the booking application
 func BenchmarkProcessBookingSource(b *testing.B) {
 	revel.Init("", "github.com/revel/examples/booking", "")
-	revel.GetRootLogHandler().Disable()
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {

@@ -38,7 +38,7 @@ func (c Application) Index() revel.Result {
 		map[string]string{"count": "10"},
 		user.AccessToken)
 	if err != nil {
-		revel.ERROR.Println(err)
+		c.Log.Error("mentions error","error",err)
 		return c.Render()
 	}
 	defer resp.Body.Close()
@@ -49,9 +49,9 @@ func (c Application) Index() revel.Result {
 	}{}
 	err = json.NewDecoder(resp.Body).Decode(&mentions)
 	if err != nil {
-		revel.ERROR.Println(err)
+		c.Log.Error("JSON error","error",err)
 	}
-	revel.INFO.Println(mentions)
+	c.Log.Info("Success","mentions",mentions)
 	return c.Render(mentions)
 }
 
@@ -62,12 +62,12 @@ func (c Application) SetStatus(status string) revel.Result {
 		getUser().AccessToken,
 	)
 	if err != nil {
-		revel.ERROR.Println(err)
+		c.Log.Error(err.Error())
 		return c.RenderError(err)
 	}
 	defer resp.Body.Close()
 	bodyBytes, _ := ioutil.ReadAll(resp.Body)
-	revel.INFO.Println(string(bodyBytes))
+	c.Log.Info(string(bodyBytes))
 	c.Response.ContentType = "application/json"
 	return c.RenderText(string(bodyBytes))
 }
@@ -82,7 +82,7 @@ func (c Application) Authenticate(oauth_verifier string) revel.Result {
 		if err == nil {
 			user.AccessToken = accessToken
 		} else {
-			revel.ERROR.Println("Error connecting to twitter:", err)
+			c.Log.Error("Error connecting to twitter:","error", err)
 		}
 		return c.Redirect(Application.Index)
 	}
@@ -93,7 +93,7 @@ func (c Application) Authenticate(oauth_verifier string) revel.Result {
 		user.RequestToken = requestToken
 		return c.Redirect(url)
 	} else {
-		revel.ERROR.Println("Error connecting to twitter:", err)
+		c.Log.Error("Error connecting to twitter:", "error", err)
 	}
 	return c.Redirect(Application.Index)
 }

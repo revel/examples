@@ -4,10 +4,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/revel/revel"
-	"github.com/revel/examples/booking2/app/models"
-	"github.com/revel/examples/booking2/app/routes"
 	"golang.org/x/crypto/bcrypt"
+
+	"github.com/revel/revel"
+
+	"github.com/revel/examples/booking/app/models"
+	"github.com/revel/examples/booking/app/routes"
+
+	"gopkg.in/Masterminds/squirrel.v1"
 )
 
 type Hotels struct {
@@ -23,24 +27,20 @@ func (c Hotels) checkUser() revel.Result {
 }
 
 func (c Hotels) Index() revel.Result {
+	c.Log.Info("Fetching index")
 	var bookings []*models.Booking
 	_, err := c.Txn.Select(&bookings,
-		`select * from Booking where UserId = ?`, c.connected().UserId)
+		c.Db.SqlStatementBuilder.Select("*").
+			From("Booking").Where("UserId = ?", c.connected().UserId))
+
 	if err != nil {
 		panic(err)
 	}
 
-	//var bookings []*models.Booking
-	//for _, r := range results {
-	//	b := r.(*models.Booking)
-	//	println("**** hotel ", b.Hotel)
-	//	bookings = append(bookings, b)
-	//}
-
 	return c.Render(bookings)
 }
 
-func (c Hotels) List(search string, size, page int) revel.Result {
+func (c Hotels) List(search string, size, page uint64) revel.Result {
 	if page == 0 {
 		page = 1
 	}
@@ -48,28 +48,18 @@ func (c Hotels) List(search string, size, page int) revel.Result {
 	search = strings.TrimSpace(search)
 
 	var hotels []*models.Hotel
-	if search == "" {
-		hotels = loadHotels(c.Txn.Select(models.Hotel{},
-			`select * from Hotel limit ?, ?`, (page-1)*size, size))
-	} else {
-		search = strings.ToLower(search)
-		hotels = loadHotels(c.Txn.Select(models.Hotel{},
-			`select * from Hotel where lower(Name) like ? or lower(City) like ?
- limit ?, ?`, "%"+search+"%", "%"+search+"%", (page-1)*size, size))
+	builder := c.Db.SqlStatementBuilder.Select("*").From("Hotel").Offset((page - 1) * size).Limit(size)
+	if search != "" {
+		search = "%" + strings.ToLower(search) + "%"
+		builder = builder.Where(squirrel.Or{
+			squirrel.Expr("lower(Name) like ?", search),
+			squirrel.Expr("lower(City) like ?", search)})
+	}
+	if _, err := c.Txn.Select(&hotels, builder); err != nil {
+		c.Log.Fatal("Unexpected error loading hotels", "error", err)
 	}
 
 	return c.Render(hotels, search, size, page, nextPage)
-}
-
-func loadHotels(results []interface{}, err error) []*models.Hotel {
-	if err != nil {
-		panic(err)
-	}
-	var hotels []*models.Hotel
-	for _, r := range results {
-		hotels = append(hotels, r.(*models.Hotel))
-	}
-	return hotels
 }
 
 func (c Hotels) loadHotelById(id int) *models.Hotel {
@@ -108,8 +98,9 @@ func (c Hotels) SaveSettings(password, verifyPassword string) revel.Result {
 	}
 
 	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	_, err := c.Txn.Exec("update User set HashedPassword = ? where UserId = ?",
-		bcryptPassword, c.connected().UserId)
+	_, err := c.Txn.ExecUpdate(c.Db.SqlStatementBuilder.
+		Update("User").Set("HashedPassword", bcryptPassword).
+		Where("UserId=?", c.connected().UserId))
 	if err != nil {
 		panic(err)
 	}

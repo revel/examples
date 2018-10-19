@@ -1,16 +1,14 @@
 package controllers
 
 import (
-	
-    "golang.org/x/crypto/bcrypt"
-	
-    "github.com/revel/revel"
-    
-	"github.com/revel/modules/orm/gorp/app/controllers"
+	"golang.org/x/crypto/bcrypt"
+
+	"github.com/revel/revel"
+
+	"database/sql"
 	"github.com/revel/examples/booking/app/models"
 	"github.com/revel/examples/booking/app/routes"
-	"database/sql"
-	"fmt"
+	"github.com/revel/modules/orm/gorp/app/controllers"
 )
 
 type Application struct {
@@ -29,22 +27,29 @@ func (c Application) connected() *models.User {
 		return c.ViewArgs["user"].(*models.User)
 	}
 	if username, ok := c.Session["user"]; ok {
-		return c.getUser(username)
+		return c.getUser(username.(string))
 	}
+	
 	return nil
 }
 
 func (c Application) getUser(username string) (user *models.User) {
 	user = &models.User{}
-	fmt.Println("get user",username,c.Txn)
+	_,  err := c.Session.GetInto("fulluser", user, false)
+	if user.Username == username {
+		return user
+	}
 
-	err := c.Txn.SelectOne(user, c.Db.SqlStatementBuilder.Select("*").From("User").Where("Username=?",username))
+	err = c.Txn.SelectOne(user, c.Db.SqlStatementBuilder.Select("*").From("User").Where("Username=?", username))
 	if err != nil {
-		if err!=sql.ErrNoRows {
-			c.Log.Error("Failed to find user")
+		if err != sql.ErrNoRows {
+			//c.Txn.Select(user, c.Db.SqlStatementBuilder.Select("*").From("User").Limit(1))
+			count, _ := c.Txn.SelectInt(c.Db.SqlStatementBuilder.Select("count(*)").From("User"))
+			c.Log.Error("Failed to find user", "user", username, "error",err, "count", count)
 		}
 		return nil
 	}
+	c.Session["fulluser"] = user
 	return
 }
 

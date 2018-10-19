@@ -39,9 +39,9 @@ func (c Application) Index() revel.Result {
 			url.QueryEscape(u.AccessToken))
 		defer resp.Body.Close()
 		if err := json.NewDecoder(resp.Body).Decode(&me); err != nil {
-			revel.ERROR.Println(err)
+			c.Log.Error("json decode error","error",err)
 		}
-		revel.INFO.Println(me)
+		c.Log.Info("Data fetched","data",me)
 	}
 
 	authUrl := FACEBOOK.AuthCodeURL("state", oauth2.AccessTypeOffline)
@@ -52,7 +52,7 @@ func (c Application) Auth(code string) revel.Result {
 
 	tok, err := FACEBOOK.Exchange(oauth2.NoContext, code)
 	if err != nil {
-		revel.ERROR.Println(err)
+		c.Log.Error("Exchange error", "error",err)
 		return c.Redirect(Application.Index)
 	}
 
@@ -64,7 +64,7 @@ func (c Application) Auth(code string) revel.Result {
 func setuser(c *revel.Controller) revel.Result {
 	var user *models.User
 	if _, ok := c.Session["uid"]; ok {
-		uid, _ := strconv.ParseInt(c.Session["uid"], 10, 0)
+		uid, _ := strconv.ParseInt(c.Session["uid"].(string), 10, 0)
 		user = models.GetUser(int(uid))
 	}
 	if user == nil {

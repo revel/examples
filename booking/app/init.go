@@ -1,11 +1,14 @@
 package app
 
 import (
+	"fmt"
 	"github.com/revel/examples/booking/app/models"
 	rgorp "github.com/revel/modules/orm/gorp/app"
 	"github.com/revel/revel"
+	"github.com/valyala/fasthttp"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/gorp.v2"
+	"net/http"
 	"time"
 )
 
@@ -25,6 +28,34 @@ func init() {
 		revel.CompressFilter,          // Compress the result.
 		revel.ActionInvoker,           // Invoke the action.
 	}
+	revel.AddInitEventHandler(func(event revel.Event, i interface{}) revel.EventResponse {
+		switch event {
+		case revel.ENGINE_BEFORE_INITIALIZED:
+
+			if revel.RunMode == "dev-fast" {
+				revel.AddHTTPMux("/this/is/a/test",fasthttp.RequestHandler( func(ctx *fasthttp.RequestCtx) {
+					fmt.Fprintln(ctx, "Hi there, it worked", string(ctx.Path()))
+					ctx.SetStatusCode(200)
+				}))
+				revel.AddHTTPMux("/this/is/", fasthttp.RequestHandler(func(ctx *fasthttp.RequestCtx) {
+					fmt.Fprintln(ctx, "Hi there, shorter prefix", string(ctx.Path()))
+					ctx.SetStatusCode(200)
+				}))
+			} else {
+				revel.AddHTTPMux("/this/is/a/test", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					fmt.Fprintln(w, "Hi there, it worked", r.URL.Path)
+					w.WriteHeader(200)
+				}))
+				revel.AddHTTPMux("/this/is/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					fmt.Fprintln(w, "Hi there, shorter prefix", r.URL.Path)
+					w.WriteHeader(200)
+				}))
+
+			}
+		}
+		return 0
+	})
+
 	revel.OnAppStart(func() {
 		Dbm := rgorp.Db.Map
 		setColumnSizes := func(t *gorp.TableMap, colSizes map[string]int) {
@@ -68,6 +99,10 @@ func init() {
 		demoUser := &models.User{0, "Demo User", "demo", "demo", bcryptPassword}
 		if err := Dbm.Insert(demoUser); err != nil {
 			panic(err)
+		}
+		count, _ := rgorp.Db.SelectInt(rgorp.Db.SqlStatementBuilder.Select("count(*)").From("User"))
+		if count > 1 {
+			revel.AppLog.Panic("Unexpected multiple users", "count", count)
 		}
 
 		hotels := []*models.Hotel{
