@@ -31,7 +31,7 @@ revel run github.com/revel/examples/booking
   - Display Facebook user information using OAuth2.
 
 * [Swagger](https://github.com/go-swagger/go-swagger)
-  - Demonstrates how to incorporate go-swagger into your repo for API's
+  - Demonstrates how to incorporate go-swagger for spec generation
 
 
 
