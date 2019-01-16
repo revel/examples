@@ -2,7 +2,7 @@ Swagger Demo
 =========================
 The `Swagger` app demonstrates ([browse the source](https://github.com/revel/samples/tree/master/swagger)):
 
-* Using go-swagger library to generate a spec based on the [chat](https://github.com/revel/samples/tree/master/chat) example
+* Using [go-swagger](https://github.com/go-swagger/go-swagger) library to generate a spec based on the [chat](https://github.com/revel/samples/tree/master/chat) example
 
 Here's a quick summary of the structure:
 ```
