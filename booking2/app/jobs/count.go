@@ -6,7 +6,7 @@ import (
 
 	"github.com/revel/modules/jobs/app/jobs"
 	"github.com/revel/modules/orm/gorp/app"
-	"github.com/revel/examples/booking/app/models"
+	"github.com/revel/examples/booking2/app/models"
 )
 
 // Periodically count the bookings in the database.

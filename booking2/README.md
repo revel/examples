@@ -140,3 +140,27 @@ ss</p>
 
 The [`field`](../manual/templates.html#field) template helper looks for errors in the validation context, using
 the field name as the key.
+
+
+### Developing notes
+All examples must be in the root folder, no nesting since the travis scripts operate on a bash script
+to bulk modify the scripts you can do something like
+
+    for file in examples/*/ 
+      do 
+        echo "$file is a directory"
+        cd $file && go mod tidy; 
+        cd ../..;
+        go mod edit -replace "github.com/revel/revel=<yourlocalpath>" $file/go.mod ; 
+      done
+
+Before committing change them back by doing
+
+    for file in examples/*/ 
+      do 
+        echo "$file is a directory"
+        cd $file && go mod tidy; 
+        cd ../..;
+        go mod edit -dropreplace "github.com/revel/revel" $file/go.mod ; 
+      done
+

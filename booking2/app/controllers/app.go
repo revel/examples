@@ -6,8 +6,7 @@ import (
 	"github.com/revel/revel"
 
 	"database/sql"
-	"github.com/revel/examples/booking/app/models"
-	"github.com/revel/examples/booking/app/routes"
+	"github.com/revel/examples/booking2/app/models"
 	"github.com/revel/modules/orm/gorp/app/controllers"
 )
 
@@ -54,7 +53,7 @@ func (c Application) getUser(username string) (user *models.User) {
 
 func (c Application) Index() revel.Result {
 	if c.connected() != nil {
-		return c.Redirect(routes.Hotels.Index())
+		return c.Redirect(Hotels.Index)
 	}
 	c.Flash.Error("Please log in first")
 	return c.Render()
@@ -73,7 +72,7 @@ func (c Application) SaveUser(user models.User, verifyPassword string) revel.Res
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
 		c.FlashParams()
-		return c.Redirect(routes.Application.Register())
+		return c.Redirect(Application.Register)
 	}
 
 	user.HashedPassword, _ = bcrypt.GenerateFromPassword(
@@ -85,7 +84,7 @@ func (c Application) SaveUser(user models.User, verifyPassword string) revel.Res
 
 	c.Session["user"] = user.Username
 	c.Flash.Success("Welcome, " + user.Name)
-	return c.Redirect(routes.Hotels.Index())
+	return c.Redirect(Hotels.Index)
 }
 
 func (c Application) Login(username, password string, remember bool) revel.Result {
@@ -100,20 +99,20 @@ func (c Application) Login(username, password string, remember bool) revel.Resul
 				c.Session.SetNoExpiration()
 			}
 			c.Flash.Success("Welcome, " + username)
-			return c.Redirect(routes.Hotels.Index())
+			return c.Redirect(Hotels.Index)
 		}
 	}
 
 	c.Flash.Out["username"] = username
 	c.Flash.Error("Login failed")
-	return c.Redirect(routes.Application.Index())
+	return c.Redirect(Application.Index)
 }
 
 func (c Application) Logout() revel.Result {
 	for k := range c.Session {
 		delete(c.Session, k)
 	}
-	return c.Redirect(routes.Application.Index())
+	return c.Redirect(Application.Index)
 }
 func (c Application) About() revel.Result {
     c.ViewArgs["Msg"]="Revel Speaks"

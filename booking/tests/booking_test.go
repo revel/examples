@@ -15,7 +15,7 @@ import (
 
 func getRevelContainer() *model.RevelContainer{
 
-	paths := model.NewRevelPaths("prod","github.com/revel/examples/booking", "", model.DoNothingRevelCallback)
+	paths, _ := model.NewRevelPaths("prod","github.com/revel/examples/booking", model.NewWrappedRevelCallback(nil, nil))
 
 	return paths
 }

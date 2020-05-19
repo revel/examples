@@ -7,9 +7,11 @@ import (
 	"github.com/revel/revel"
 	"github.com/valyala/fasthttp"
 	"golang.org/x/crypto/bcrypt"
-	"gopkg.in/gorp.v2"
+	"github.com/go-gorp/gorp"
 	"net/http"
 	"time"
+	"os"
+	"github.com/revel/revel/logger"
 )
 
 func init() {
@@ -28,6 +30,11 @@ func init() {
 		revel.CompressFilter,          // Compress the result.
 		revel.ActionInvoker,           // Invoke the action.
 	}
+	logger.LogFunctionMap["stdoutjson"]=
+		func(c *logger.CompositeMultiHandler, options *logger.LogOptions) {
+			// Set the json formatter to os.Stdout, replace any existing handlers for the level specified
+			c.SetJson(os.Stdout, options)
+		}
 	revel.AddInitEventHandler(func(event revel.Event, i interface{}) revel.EventResponse {
 		switch event {
 		case revel.ENGINE_BEFORE_INITIALIZED:
