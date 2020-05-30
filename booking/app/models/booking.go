@@ -5,7 +5,7 @@ import (
 	"github.com/revel/revel"
 	"regexp"
 	"time"
-	"gopkg.in/gorp.v2"
+	"github.com/go-gorp/gorp"
 )
 
 type Booking struct {

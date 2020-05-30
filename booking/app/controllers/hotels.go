@@ -1,3 +1,29 @@
+//go:generate swagger generate spec -o swagger.json
+
+// Package classification Swagger Hotel Example.
+// Swagger Hotel Example
+//
+//
+//
+//     Schemes: https
+//     Host: hotel.example.revelframework.com
+//     BasePath: /
+//     Version: 1.0.0
+//     License: MIT http://opensource.org/licenses/MIT
+//     Contact: Name<email@somehwere.com> https://www.somewhere.com
+//
+//     Consumes:
+//     - application/json
+//     - application/x-www-form-urlencoded
+//
+//     Produces:
+//     - text/html
+//
+//
+//
+//
+// swagger:meta
+
 package controllers
 
 import (
@@ -11,7 +37,7 @@ import (
 	"github.com/revel/examples/booking/app/models"
 	"github.com/revel/examples/booking/app/routes"
 
-	"gopkg.in/Masterminds/squirrel.v1"
+	"github.com/Masterminds/squirrel"
 )
 
 type Hotels struct {
@@ -40,6 +66,69 @@ func (c Hotels) Index() revel.Result {
 	return c.Render(bookings)
 }
 
+// swagger:route GET /hotels/ListJson enter demo
+//
+// Enter Demo
+//
+//
+//     Consumes:
+//     - application/x-www-form-urlencoded
+//
+//     Produces:
+//     - text/html
+//
+//     Schemes: https
+//
+//
+//     Responses:
+//       200: Success
+//       401: Invalid User
+
+// swagger:operation GET /demo demo
+//
+// Enter Demo
+//
+//
+// ---
+// produces:
+// - text/html
+// parameters:
+// - name: user
+//   in: formData
+//   description: user
+//   required: true
+//   type: string
+// - name: demo
+//   in: formData
+//   description: demo
+//   required: true
+//   type: string
+// responses:
+//   '200':
+//     description: Success
+//   '401':
+//     description: Invalid User
+func (c Hotels) ListJson(search string, size, page uint64) revel.Result {
+	if page == 0 {
+		page = 1
+	}
+	nextPage := page + 1
+	search = strings.TrimSpace(search)
+
+	var hotels []*models.Hotel
+	builder := c.Db.SqlStatementBuilder.Select("*").From("Hotel").Offset((page - 1) * size).Limit(size)
+	if search != "" {
+		search = "%" + strings.ToLower(search) + "%"
+		builder = builder.Where(squirrel.Or{
+			squirrel.Expr("lower(Name) like ?", search),
+			squirrel.Expr("lower(City) like ?", search)})
+	}
+	if _, err := c.Txn.Select(&hotels, builder); err != nil {
+		c.Log.Fatal("Unexpected error loading hotels", "error", err)
+	}
+
+	return c.RenderJSON(map[string]interface{}{"hotels":hotels, "search":search, "size":size, "page":page, "nextPage":nextPage})
+}
 func (c Hotels) List(search string, size, page uint64) revel.Result {
 	if page == 0 {
 		page = 1

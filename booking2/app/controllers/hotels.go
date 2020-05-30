@@ -8,10 +8,9 @@ import (
 
 	"github.com/revel/revel"
 
-	"github.com/revel/examples/booking/app/models"
-	"github.com/revel/examples/booking/app/routes"
+	"github.com/revel/examples/booking2/app/models"
 
-	"gopkg.in/Masterminds/squirrel.v1"
+	"github.com/Masterminds/squirrel"
 )
 
 type Hotels struct {
@@ -21,7 +20,7 @@ type Hotels struct {
 func (c Hotels) checkUser() revel.Result {
 	if user := c.connected(); user == nil {
 		c.Flash.Error("Please log in first")
-		return c.Redirect(routes.Application.Index())
+		return c.Redirect(Application.Index)
 	}
 	return nil
 }
@@ -94,7 +93,7 @@ func (c Hotels) SaveSettings(password, verifyPassword string) revel.Result {
 		Message("Your password doesn't match")
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
-		return c.Redirect(routes.Hotels.Settings())
+		return c.Redirect(Hotels.Settings)
 	}
 
 	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -105,7 +104,7 @@ func (c Hotels) SaveSettings(password, verifyPassword string) revel.Result {
 		panic(err)
 	}
 	c.Flash.Success("Password updated")
-	return c.Redirect(routes.Hotels.Index())
+	return c.Redirect(Hotels.Index)
 }
 
 func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
@@ -122,7 +121,7 @@ func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
 	if c.Validation.HasErrors() || c.Params.Get("revise") != "" {
 		c.Validation.Keep()
 		c.FlashParams()
-		return c.Redirect(routes.Hotels.Book(id))
+		return c.Redirect(Hotels.Book,id)
 	}
 
 	if c.Params.Get("confirm") != "" {
@@ -132,7 +131,7 @@ func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
 		}
 		c.Flash.Success("Thank you, %s, your confirmation number for %s is %d",
 			booking.User.Name, hotel.Name, booking.BookingId)
-		return c.Redirect(routes.Hotels.Index())
+		return c.Redirect(Hotels.Index, id)
 	}
 
 	return c.Render(title, hotel, booking)
@@ -144,7 +143,7 @@ func (c Hotels) CancelBooking(id int) revel.Result {
 		panic(err)
 	}
 	c.Flash.Success(fmt.Sprintln("Booking cancelled for confirmation number", id))
-	return c.Redirect(routes.Hotels.Index())
+	return c.Redirect(Hotels.Index)
 }
 
 func (c Hotels) Book(id int) revel.Result {
