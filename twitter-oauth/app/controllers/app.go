@@ -3,13 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"io/ioutil"
-    
-    "github.com/mrjones/oauth"
-	
-    "github.com/revel/revel"
-	
-    "github.com/revel/examples/twitter-oauth/app/models"
-    
+
+	"github.com/mrjones/oauth"
+	"github.com/revel/examples/twitter-oauth/app/models"
+	"github.com/revel/revel"
 )
 
 var TWITTER = oauth.NewConsumer(
@@ -38,7 +35,7 @@ func (c Application) Index() revel.Result {
 		map[string]string{"count": "10"},
 		user.AccessToken)
 	if err != nil {
-		c.Log.Error("mentions error","error",err)
+		c.Log.Error("mentions error", "error", err)
 		return c.Render()
 	}
 	defer resp.Body.Close()
@@ -49,9 +46,9 @@ func (c Application) Index() revel.Result {
 	}{}
 	err = json.NewDecoder(resp.Body).Decode(&mentions)
 	if err != nil {
-		c.Log.Error("JSON error","error",err)
+		c.Log.Error("JSON error", "error", err)
 	}
-	c.Log.Info("Success","mentions",mentions)
+	c.Log.Info("Success", "mentions", mentions)
 	return c.Render(mentions)
 }
 
@@ -82,7 +79,7 @@ func (c Application) Authenticate(oauth_verifier string) revel.Result {
 		if err == nil {
 			user.AccessToken = accessToken
 		} else {
-			c.Log.Error("Error connecting to twitter:","error", err)
+			c.Log.Error("Error connecting to twitter:", "error", err)
 		}
 		return c.Redirect(Application.Index)
 	}

@@ -29,7 +29,7 @@ func (c *Multiple) HandleUpload() revel.Result {
 
 	// Prepare result.
 	filesInfo := make([]FileInfo, len(files))
-	for i, _ := range files {
+	for i := range files {
 		filesInfo[i] = FileInfo{
 			ContentType: c.Params.Files["file[]"][i].Header.Get("Content-Type"),
 			Filename:    c.Params.Files["file[]"][i].Filename,

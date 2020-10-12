@@ -30,14 +30,11 @@ import (
 	"fmt"
 	"strings"
 
-	"golang.org/x/crypto/bcrypt"
-
-	"github.com/revel/revel"
-
+	"github.com/Masterminds/squirrel"
 	"github.com/revel/examples/booking/app/models"
 	"github.com/revel/examples/booking/app/routes"
-
-	"github.com/Masterminds/squirrel"
+	"github.com/revel/revel"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Hotels struct {
@@ -58,7 +55,6 @@ func (c Hotels) Index() revel.Result {
 	_, err := c.Txn.Select(&bookings,
 		c.Db.SqlStatementBuilder.Select("*").
 			From("Booking").Where("UserId = ?", c.connected().UserId))
-
 	if err != nil {
 		panic(err)
 	}
@@ -121,14 +117,16 @@ func (c Hotels) ListJson(search string, size, page uint64) revel.Result {
 		search = "%" + strings.ToLower(search) + "%"
 		builder = builder.Where(squirrel.Or{
 			squirrel.Expr("lower(Name) like ?", search),
-			squirrel.Expr("lower(City) like ?", search)})
+			squirrel.Expr("lower(City) like ?", search),
+		})
 	}
 	if _, err := c.Txn.Select(&hotels, builder); err != nil {
 		c.Log.Fatal("Unexpected error loading hotels", "error", err)
 	}
 
-	return c.RenderJSON(map[string]interface{}{"hotels":hotels, "search":search, "size":size, "page":page, "nextPage":nextPage})
+	return c.RenderJSON(map[string]interface{}{"hotels": hotels, "search": search, "size": size, "page": page, "nextPage": nextPage})
 }
+
 func (c Hotels) List(search string, size, page uint64) revel.Result {
 	if page == 0 {
 		page = 1
@@ -142,7 +140,8 @@ func (c Hotels) List(search string, size, page uint64) revel.Result {
 		search = "%" + strings.ToLower(search) + "%"
 		builder = builder.Where(squirrel.Or{
 			squirrel.Expr("lower(Name) like ?", search),
-			squirrel.Expr("lower(City) like ?", search)})
+			squirrel.Expr("lower(City) like ?", search),
+		})
 	}
 	if _, err := c.Txn.Select(&hotels, builder); err != nil {
 		c.Log.Fatal("Unexpected error loading hotels", "error", err)

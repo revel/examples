@@ -2,16 +2,17 @@ package app
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/go-gorp/gorp"
 	"github.com/revel/examples/booking/app/models"
 	rgorp "github.com/revel/modules/orm/gorp/app"
 	"github.com/revel/revel"
+	"github.com/revel/revel/logger"
 	"github.com/valyala/fasthttp"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/go-gorp/gorp"
-	"net/http"
-	"time"
-	"os"
-	"github.com/revel/revel/logger"
 )
 
 func init() {
@@ -30,7 +31,7 @@ func init() {
 		revel.CompressFilter,          // Compress the result.
 		revel.ActionInvoker,           // Invoke the action.
 	}
-	logger.LogFunctionMap["stdoutjson"]=
+	logger.LogFunctionMap["stdoutjson"] =
 		func(c *logger.CompositeMultiHandler, options *logger.LogOptions) {
 			// Set the json formatter to os.Stdout, replace any existing handlers for the level specified
 			c.SetJson(os.Stdout, options)
@@ -40,7 +41,7 @@ func init() {
 		case revel.ENGINE_BEFORE_INITIALIZED:
 
 			if revel.RunMode == "dev-fast" {
-				revel.AddHTTPMux("/this/is/a/test",fasthttp.RequestHandler( func(ctx *fasthttp.RequestCtx) {
+				revel.AddHTTPMux("/this/is/a/test", fasthttp.RequestHandler(func(ctx *fasthttp.RequestCtx) {
 					fmt.Fprintln(ctx, "Hi there, it worked", string(ctx.Path()))
 					ctx.SetStatusCode(200)
 				}))
@@ -57,7 +58,6 @@ func init() {
 					fmt.Fprintln(w, "Hi there, shorter prefix", r.URL.Path)
 					w.WriteHeader(200)
 				}))
-
 			}
 		}
 		return 0
@@ -113,9 +113,9 @@ func init() {
 		}
 
 		hotels := []*models.Hotel{
-			&models.Hotel{0, "Marriott Courtyard", "Tower Pl, Buckhead", "Atlanta", "GA", "30305", "USA", 120},
-			&models.Hotel{0, "W Hotel", "Union Square, Manhattan", "New York", "NY", "10011", "USA", 450},
-			&models.Hotel{0, "Hotel Rouge", "1315 16th St NW", "Washington", "DC", "20036", "USA", 250},
+			{0, "Marriott Courtyard", "Tower Pl, Buckhead", "Atlanta", "GA", "30305", "USA", 120},
+			{0, "W Hotel", "Union Square, Manhattan", "New York", "NY", "10011", "USA", 450},
+			{0, "Hotel Rouge", "1315 16th St NW", "Washington", "DC", "20036", "USA", 250},
 		}
 		for _, hotel := range hotels {
 			if err := Dbm.Insert(hotel); err != nil {
@@ -123,9 +123,9 @@ func init() {
 			}
 		}
 		bookings := []*models.Booking{
-			&models.Booking{0, demoUser.UserId, hotels[0].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
-			&models.Booking{0, demoUser.UserId, hotels[1].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
-			&models.Booking{0, demoUser.UserId, hotels[2].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id3", "n3", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[2]},
+			{0, demoUser.UserId, hotels[0].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
+			{0, demoUser.UserId, hotels[1].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
+			{0, demoUser.UserId, hotels[2].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id3", "n3", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[2]},
 		}
 		for _, booking := range bookings {
 			if err := Dbm.Insert(booking); err != nil {

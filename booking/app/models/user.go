@@ -2,8 +2,9 @@ package models
 
 import (
 	"fmt"
-	"github.com/revel/revel"
 	"regexp"
+
+	"github.com/revel/revel"
 )
 
 type User struct {

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/revel/revel"
 	"github.com/revel/examples/validation/app/models"
+	"github.com/revel/revel"
 )
 
 type Sample3 struct {
@@ -20,6 +20,7 @@ func (c Sample3) HandleSubmit(user *models.User) revel.Result {
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
 		c.FlashParams()
+
 		return c.Redirect(Sample3.Index)
 	}
 

@@ -5,7 +5,6 @@ import (
 	"path"
 
 	"github.com/revel/examples/upload/app/routes"
-
 	"github.com/revel/revel"
 	"github.com/revel/revel/testing"
 )

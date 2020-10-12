@@ -4,13 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"golang.org/x/crypto/bcrypt"
-
-	"github.com/revel/revel"
-
-	"github.com/revel/examples/booking2/app/models"
-
 	"github.com/Masterminds/squirrel"
+	"github.com/revel/examples/booking2/app/models"
+	"github.com/revel/revel"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Hotels struct {
@@ -31,7 +28,6 @@ func (c Hotels) Index() revel.Result {
 	_, err := c.Txn.Select(&bookings,
 		c.Db.SqlStatementBuilder.Select("*").
 			From("Booking").Where("UserId = ?", c.connected().UserId))
-
 	if err != nil {
 		panic(err)
 	}
@@ -52,7 +48,8 @@ func (c Hotels) List(search string, size, page uint64) revel.Result {
 		search = "%" + strings.ToLower(search) + "%"
 		builder = builder.Where(squirrel.Or{
 			squirrel.Expr("lower(Name) like ?", search),
-			squirrel.Expr("lower(City) like ?", search)})
+			squirrel.Expr("lower(City) like ?", search),
+		})
 	}
 	if _, err := c.Txn.Select(&hotels, builder); err != nil {
 		c.Log.Fatal("Unexpected error loading hotels", "error", err)
@@ -121,7 +118,7 @@ func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
 	if c.Validation.HasErrors() || c.Params.Get("revise") != "" {
 		c.Validation.Keep()
 		c.FlashParams()
-		return c.Redirect(Hotels.Book,id)
+		return c.Redirect(Hotels.Book, id)
 	}
 
 	if c.Params.Get("confirm") != "" {
