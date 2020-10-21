@@ -16,13 +16,19 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/poy/onpar v1.0.0 // indirect
-	github.com/revel/cmd v0.21.1
+	github.com/revel/cmd v1.0.2
 	github.com/revel/config v1.0.0 // indirect
 	github.com/revel/cron v1.0.0 // indirect
+	github.com/revel/log15 v2.11.20+incompatible // indirect
 	github.com/revel/modules v1.0.0
+	github.com/revel/pathtree v0.0.0-20140121041023-41257a1839e9 // indirect
 	github.com/revel/revel v1.0.0
-	github.com/valyala/fasthttp v1.16.0
-	golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0
-	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb // indirect
-	golang.org/x/sys v0.0.0-20201009025420-dfb3f7c4e634 // indirect
+	github.com/twinj/uuid v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.12.0
+	github.com/xeonx/timeago v1.0.0-rc4 // indirect
+	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79
+	gopkg.in/fsnotify/fsnotify.v1 v1.4.7 // indirect
+	gopkg.in/gorp.v2 v2.2.0 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
+	gopkg.in/stack.v0 v0.0.0-20141108040640-9b43fcefddd0 // indirect
 )
