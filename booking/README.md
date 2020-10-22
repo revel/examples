@@ -4,7 +4,7 @@ Hotel Booking Example
 The Hotel Booking example app demonstrates ([browse the source](https://github.com/revel/examples/tree/master/booking)):
 
 * Using an SQL (SQLite) database and configuring the Revel DB module.
-* Using the third party [GORP](https://github.com/coopernurse/gorp) *ORM-ish* library
+* Using the third party [GORP](https://github.com/go-gorp/gorp) *ORM-ish* library
 * [Interceptors](../manual/interceptors.html) for checking that an user is logged in.
 * Using [validation](../manual/validation) and displaying inline errors
 
