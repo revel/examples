@@ -96,10 +96,10 @@
       <td>{{.Hotel.City}}, {{.Hotel.State}}, {{.Hotel.Country}}</td>
       <td>{{.CheckInDate.Format "2006-01-02"}}</td>
       <td>{{.CheckOutDate.Format "2006-01-02"}}</td>
-      <td>{{.BookingId}}</td>
+      <td>{{.BookingID}}</td>
       <td>
-        <form id="d{{.BookingId}}" method="POST" action="/bookings/{{.BookingId}}/cancel">
-          <a href="javascript:document.getElementById('d{{.BookingId}}').submit();">Cancel</a>
+        <form id="d{{.BookingID}}" method="POST" action="/bookings/{{.BookingID}}/cancel">
+          <a href="javascript:document.getElementById('d{{.BookingID}}').submit();">Cancel</a>
         </form>
       </td>
     </tr>

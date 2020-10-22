@@ -57,7 +57,7 @@ var (
 	publish = make(chan Event, 10)
 )
 
-// This function loops forever, handling the chat room pubsub
+// This function loops forever, handling the chat room pubsub.
 func chatroom() {
 	archive := list.New()
 	subscribers := list.New()

@@ -9,7 +9,6 @@ type Application struct {
 }
 
 func (c Application) Index() revel.Result {
-
 	return c.Render()
 }
 

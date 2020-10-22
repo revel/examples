@@ -7,11 +7,10 @@ import (
 	"net/url"
 	"strconv"
 
+	"github.com/revel/examples/facebook-oauth2/app/models"
+	"github.com/revel/revel"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/facebook"
-    
-    "github.com/revel/revel"
-	"github.com/revel/examples/facebook-oauth2/app/models"
 )
 
 type Application struct {
@@ -39,9 +38,9 @@ func (c Application) Index() revel.Result {
 			url.QueryEscape(u.AccessToken))
 		defer resp.Body.Close()
 		if err := json.NewDecoder(resp.Body).Decode(&me); err != nil {
-			c.Log.Error("json decode error","error",err)
+			c.Log.Error("json decode error", "error", err)
 		}
-		c.Log.Info("Data fetched","data",me)
+		c.Log.Info("Data fetched", "data", me)
 	}
 
 	authUrl := FACEBOOK.AuthCodeURL("state", oauth2.AccessTypeOffline)
@@ -49,10 +48,9 @@ func (c Application) Index() revel.Result {
 }
 
 func (c Application) Auth(code string) revel.Result {
-
 	tok, err := FACEBOOK.Exchange(oauth2.NoContext, code)
 	if err != nil {
-		c.Log.Error("Exchange error", "error",err)
+		c.Log.Error("Exchange error", "error", err)
 		return c.Redirect(Application.Index)
 	}
 

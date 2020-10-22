@@ -5,22 +5,26 @@ package tests_test
 // license that can be found in the LICENSE file.
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/revel/cmd/model"
 	revelParser "github.com/revel/cmd/parser"
 	"github.com/revel/revel"
-	"strings"
 )
 
-func getRevelContainer() *model.RevelContainer{
-
-	paths, _ := model.NewRevelPaths("prod","github.com/revel/examples/booking", model.NewWrappedRevelCallback(nil, nil))
+func getRevelContainer() *model.RevelContainer {
+	paths, _ := model.NewRevelPaths("prod",
+		"github.com/revel/examples/booking", ".",
+		model.NewWrappedRevelCallback(func(key model.Event, value interface{}) model.EventResponse {
+			return model.EventResponse(0)
+		},
+			func(pkgName string) error { return nil }))
 
 	return paths
 }
 
-// A test for processing the booking application source
+// A test for processing the booking application source.
 func TestProcessBookingSource(t *testing.T) {
 	revel.Init("prod", "github.com/revel/examples/booking", "")
 	sourceInfo, err := revelParser.ProcessSource(getRevelContainer())
@@ -34,9 +38,9 @@ func TestProcessBookingSource(t *testing.T) {
 		{"Hotels", controllerPackage, "controllers", nil, nil},
 	}
 	specList := []*model.TypeInfo{}
-	for _,x := range sourceInfo.ControllerSpecs() {
-		if strings.HasPrefix(x.ImportPath,controllerPackage) {
-			specList = append(specList,x)
+	for _, x := range sourceInfo.ControllerSpecs() {
+		if strings.HasPrefix(x.ImportPath, controllerPackage) {
+			specList = append(specList, x)
 		}
 	}
 	if len(specList) != len(expectedControllerSpecs) {
@@ -65,7 +69,7 @@ NEXT_TEST:
 }
 
 // Performance test for booking application
-// this tests the speed of the command line utility to process the source of the booking application
+// this tests the speed of the command line utility to process the source of the booking application.
 func BenchmarkProcessBookingSource(b *testing.B) {
 	revel.Init("", "github.com/revel/examples/booking", "")
 	b.ResetTimer()

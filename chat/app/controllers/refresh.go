@@ -1,9 +1,8 @@
 package controllers
 
 import (
-	"github.com/revel/revel"
-    
 	"github.com/revel/examples/chat/app/chatroom"
+	"github.com/revel/revel"
 )
 
 type Refresh struct {
@@ -19,7 +18,7 @@ func (c Refresh) Room(user string) revel.Result {
 	subscription := chatroom.Subscribe()
 	defer subscription.Cancel()
 	events := subscription.Archive
-	for i, _ := range events {
+	for i := range events {
 		if events[i].User == user {
 			events[i].User = "you"
 		}

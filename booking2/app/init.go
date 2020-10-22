@@ -1,12 +1,13 @@
 package app
 
 import (
+	"time"
+
+	"github.com/go-gorp/gorp"
 	"github.com/revel/examples/booking2/app/models"
 	rgorp "github.com/revel/modules/orm/gorp/app"
 	"github.com/revel/revel"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/go-gorp/gorp"
-	"time"
 )
 
 func init() {
@@ -63,8 +64,8 @@ func init() {
 
 		rgorp.Db.TraceOn(revel.AppLog)
 		err := Dbm.CreateTables()
-		if err!=nil {
-			revel.AppLog.Fatal("Failed to create tables","error",err)
+		if err != nil {
+			revel.AppLog.Fatal("Failed to create tables", "error", err)
 		}
 
 		bcryptPassword, _ := bcrypt.GenerateFromPassword(
@@ -79,9 +80,9 @@ func init() {
 		}
 
 		hotels := []*models.Hotel{
-			&models.Hotel{0, "Marriott Courtyard", "Tower Pl, Buckhead", "Atlanta", "GA", "30305", "USA", 120},
-			&models.Hotel{0, "W Hotel", "Union Square, Manhattan", "New York", "NY", "10011", "USA", 450},
-			&models.Hotel{0, "Hotel Rouge", "1315 16th St NW", "Washington", "DC", "20036", "USA", 250},
+			{0, "Marriott Courtyard", "Tower Pl, Buckhead", "Atlanta", "GA", "30305", "USA", 120},
+			{0, "W Hotel", "Union Square, Manhattan", "New York", "NY", "10011", "USA", 450},
+			{0, "Hotel Rouge", "1315 16th St NW", "Washington", "DC", "20036", "USA", 250},
 		}
 		for _, hotel := range hotels {
 			if err := Dbm.Insert(hotel); err != nil {
@@ -89,9 +90,9 @@ func init() {
 			}
 		}
 		bookings := []*models.Booking{
-			&models.Booking{0, demoUser.UserId, hotels[0].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
-			&models.Booking{0, demoUser.UserId, hotels[1].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
-			&models.Booking{0, demoUser.UserId, hotels[2].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id3", "n3", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[2]},
+			{0, demoUser.UserId, hotels[0].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
+			{0, demoUser.UserId, hotels[1].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
+			{0, demoUser.UserId, hotels[2].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id3", "n3", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[2]},
 		}
 		for _, booking := range bookings {
 			if err := Dbm.Insert(booking); err != nil {

@@ -17,7 +17,6 @@ func (c Sample1) HandleSubmit(
 	age int,
 	password, passwordConfirm, email, emailConfirm string,
 	termsOfUse bool) revel.Result {
-
 	// Validation rules
 	c.Validation.Required(username).Message("Username is required.")
 	c.Validation.MinSize(username, 6).Message("Username must be at least 6 characters.")
@@ -33,12 +32,13 @@ func (c Sample1) HandleSubmit(
 	c.Validation.Email(email).Message("A valid email is required.")
 	c.Validation.Required(emailConfirm).Message("Please confirm your email address.")
 	c.Validation.Required(emailConfirm == email).Message("Your email addresses do not match.")
-	c.Validation.Required(termsOfUse == true).Message("Please agree to the terms.")
+	c.Validation.Required(termsOfUse).Message("Please agree to the terms.")
 
 	// Handle errors
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
 		c.FlashParams()
+
 		return c.Redirect(Sample1.Index)
 	}
 
