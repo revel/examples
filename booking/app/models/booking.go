@@ -10,9 +10,9 @@ import (
 )
 
 type Booking struct {
-	BookingId    int
-	UserId       int
-	HotelId      int
+	BookingID    int
+	UserID       int
+	HotelID      int
 	CheckInStr   string
 	CheckOutStr  string
 	CardNumber   string
@@ -42,8 +42,8 @@ func (b Booking) Validate(v *revel.Validation) {
 
 	v.Check(b.NameOnCard,
 		revel.Required{},
-		revel.MinSize{3},
-		revel.MaxSize{70},
+		revel.MinSize{Min: 3},
+		revel.MaxSize{Max: 70},
 	)
 }
 
@@ -80,8 +80,8 @@ func (b Booking) String() string {
 // - Sqlite's lack of support for datetimes.
 
 func (b *Booking) PreInsert(_ gorp.SqlExecutor) error {
-	b.UserId = b.User.UserId
-	b.HotelId = b.Hotel.HotelId
+	b.UserID = b.User.UserID
+	b.HotelID = b.Hotel.HotelID
 	b.CheckInStr = b.CheckInDate.Format(SQL_DATE_FORMAT)
 	b.CheckOutStr = b.CheckOutDate.Format(SQL_DATE_FORMAT)
 	return nil
@@ -93,24 +93,24 @@ func (b *Booking) PostGet(exe gorp.SqlExecutor) error {
 		err error
 	)
 
-	obj, err = exe.Get(User{}, b.UserId)
+	obj, err = exe.Get(User{}, b.UserID)
 	if err != nil {
-		return fmt.Errorf("error loading a booking's user (%d): %s", b.UserId, err)
+		return fmt.Errorf("error loading a booking's user (%d): %s", b.UserID, err)
 	}
 
 	b.User = obj.(*User)
 
-	obj, err = exe.Get(Hotel{}, b.HotelId)
+	obj, err = exe.Get(Hotel{}, b.HotelID)
 	if err != nil {
-		return fmt.Errorf("error loading a booking's hotel (%d): %s", b.HotelId, err)
+		return fmt.Errorf("error loading a booking's hotel (%d): %s", b.HotelID, err)
 	}
 	b.Hotel = obj.(*Hotel)
 
 	if b.CheckInDate, err = time.Parse(SQL_DATE_FORMAT, b.CheckInStr); err != nil {
-		return fmt.Errorf("error parsing check in date '%s' %s:", b.CheckInStr, err.Error())
+		return fmt.Errorf("error parsing check in date '%s' %s", b.CheckInStr, err.Error())
 	}
 	if b.CheckOutDate, err = time.Parse(SQL_DATE_FORMAT, b.CheckOutStr); err != nil {
-		return fmt.Errorf("error parsing check out date '%s' %s:", b.CheckOutStr, err.Error())
+		return fmt.Errorf("error parsing check out date '%s' %s", b.CheckOutStr, err.Error())
 	}
 	return nil
 }

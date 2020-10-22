@@ -5,7 +5,7 @@ import (
 )
 
 type Hotel struct {
-	HotelId          int
+	HotelID          int
 	Name, Address    string
 	City, State, Zip string
 	Country          string
@@ -15,31 +15,31 @@ type Hotel struct {
 func (hotel *Hotel) Validate(v *revel.Validation) {
 	v.Check(hotel.Name,
 		revel.Required{},
-		revel.MaxSize{50},
+		revel.MaxSize{Max: 50},
 	)
 
 	v.MaxSize(hotel.Address, 100)
 
 	v.Check(hotel.City,
 		revel.Required{},
-		revel.MaxSize{40},
+		revel.MaxSize{Max: 40},
 	)
 
 	v.Check(hotel.State,
 		revel.Required{},
-		revel.MaxSize{6},
-		revel.MinSize{2},
+		revel.MaxSize{Max: 6},
+		revel.MinSize{Min: 2},
 	)
 
 	v.Check(hotel.Zip,
 		revel.Required{},
-		revel.MaxSize{6},
-		revel.MinSize{5},
+		revel.MaxSize{Max: 6},
+		revel.MinSize{Min: 5},
 	)
 
 	v.Check(hotel.Country,
 		revel.Required{},
-		revel.MaxSize{40},
-		revel.MinSize{2},
+		revel.MaxSize{Max: 40},
+		revel.MinSize{Min: 2},
 	)
 }

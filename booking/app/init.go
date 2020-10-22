@@ -37,9 +37,7 @@ func init() {
 			c.SetJson(os.Stdout, options)
 		}
 	revel.AddInitEventHandler(func(event revel.Event, i interface{}) revel.EventResponse {
-		switch event {
-		case revel.ENGINE_BEFORE_INITIALIZED:
-
+		if event == revel.ENGINE_BEFORE_INITIALIZED {
 			if revel.RunMode == "dev-fast" {
 				revel.AddHTTPMux("/this/is/a/test", fasthttp.RequestHandler(func(ctx *fasthttp.RequestCtx) {
 					fmt.Fprintln(ctx, "Hi there, it worked", string(ctx.Path()))
@@ -60,6 +58,7 @@ func init() {
 				}))
 			}
 		}
+
 		return 0
 	})
 
@@ -71,14 +70,14 @@ func init() {
 			}
 		}
 
-		t := Dbm.AddTable(models.User{}).SetKeys(true, "UserId")
+		t := Dbm.AddTable(models.User{}).SetKeys(true, "UserID")
 		t.ColMap("Password").Transient = true
 		setColumnSizes(t, map[string]int{
 			"Username": 20,
 			"Name":     100,
 		})
 
-		t = Dbm.AddTable(models.Hotel{}).SetKeys(true, "HotelId")
+		t = Dbm.AddTable(models.Hotel{}).SetKeys(true, "HotelID")
 		setColumnSizes(t, map[string]int{
 			"Name":    50,
 			"Address": 100,
@@ -88,7 +87,7 @@ func init() {
 			"Country": 40,
 		})
 
-		t = Dbm.AddTable(models.Booking{}).SetKeys(true, "BookingId")
+		t = Dbm.AddTable(models.Booking{}).SetKeys(true, "BookingID")
 		t.ColMap("User").Transient = true
 		t.ColMap("Hotel").Transient = true
 		t.ColMap("CheckInDate").Transient = true
@@ -103,7 +102,12 @@ func init() {
 
 		bcryptPassword, _ := bcrypt.GenerateFromPassword(
 			[]byte("demo"), bcrypt.DefaultCost)
-		demoUser := &models.User{0, "Demo User", "demo", "demo", bcryptPassword}
+		demoUser := &models.User{
+			Name:           "Demo User",
+			Username:       "demo",
+			Password:       "demo",
+			HashedPassword: bcryptPassword,
+		}
 		if err := Dbm.Insert(demoUser); err != nil {
 			panic(err)
 		}
@@ -113,9 +117,33 @@ func init() {
 		}
 
 		hotels := []*models.Hotel{
-			{0, "Marriott Courtyard", "Tower Pl, Buckhead", "Atlanta", "GA", "30305", "USA", 120},
-			{0, "W Hotel", "Union Square, Manhattan", "New York", "NY", "10011", "USA", 450},
-			{0, "Hotel Rouge", "1315 16th St NW", "Washington", "DC", "20036", "USA", 250},
+			{
+				Name:    "Marriott Courtyard",
+				Address: "Tower Pl, Buckhead",
+				City:    "Atlanta",
+				State:   "GA",
+				Zip:     "30305",
+				Country: "USA",
+				Price:   120,
+			},
+			{
+				Name:    "W Hotel",
+				Address: "Union Square, Manhattan",
+				City:    "New York",
+				State:   "NY",
+				Zip:     "10011",
+				Country: "USA",
+				Price:   450,
+			},
+			{
+				Name:    "Hotel Rouge",
+				Address: "1315 16th St NW",
+				City:    "Washington",
+				State:   "DC",
+				Zip:     "20036",
+				Country: "USA",
+				Price:   250,
+			},
 		}
 		for _, hotel := range hotels {
 			if err := Dbm.Insert(hotel); err != nil {
@@ -123,9 +151,54 @@ func init() {
 			}
 		}
 		bookings := []*models.Booking{
-			{0, demoUser.UserId, hotels[0].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
-			{0, demoUser.UserId, hotels[1].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
-			{0, demoUser.UserId, hotels[2].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id3", "n3", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[2]},
+			{
+				UserID:       demoUser.UserID,
+				HotelID:      hotels[0].HotelID,
+				CheckInStr:   time.Now().Format(models.SQL_DATE_FORMAT),
+				CheckOutStr:  time.Now().Format(models.SQL_DATE_FORMAT),
+				CardNumber:   "id1",
+				NameOnCard:   "n1",
+				CardExpMonth: 12,
+				CardExpYear:  2,
+				Smoking:      false,
+				Beds:         2,
+				CheckInDate:  time.Now(),
+				CheckOutDate: time.Now(),
+				User:         demoUser,
+				Hotel:        hotels[0],
+			},
+			{
+				UserID:       demoUser.UserID,
+				HotelID:      hotels[1].HotelID,
+				CheckInStr:   time.Now().Format(models.SQL_DATE_FORMAT),
+				CheckOutStr:  time.Now().Format(models.SQL_DATE_FORMAT),
+				CardNumber:   "id2",
+				NameOnCard:   "n2",
+				CardExpMonth: 12,
+				CardExpYear:  2,
+				Smoking:      false,
+				Beds:         2,
+				CheckInDate:  time.Now(),
+				CheckOutDate: time.Now(),
+				User:         demoUser,
+				Hotel:        hotels[1],
+			},
+			{
+				UserID:       demoUser.UserID,
+				HotelID:      hotels[2].HotelID,
+				CheckInStr:   time.Now().Format(models.SQL_DATE_FORMAT),
+				CheckOutStr:  time.Now().Format(models.SQL_DATE_FORMAT),
+				CardNumber:   "id3",
+				NameOnCard:   "n3",
+				CardExpMonth: 12,
+				CardExpYear:  2,
+				Smoking:      false,
+				Beds:         2,
+				CheckInDate:  time.Now(),
+				CheckOutDate: time.Now(),
+				User:         demoUser,
+				Hotel:        hotels[2],
+			},
 		}
 		for _, booking := range bookings {
 			if err := Dbm.Insert(booking); err != nil {

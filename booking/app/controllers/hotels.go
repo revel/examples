@@ -54,7 +54,7 @@ func (c Hotels) Index() revel.Result {
 	var bookings []*models.Booking
 	_, err := c.Txn.Select(&bookings,
 		c.Db.SqlStatementBuilder.Select("*").
-			From("Booking").Where("UserId = ?", c.connected().UserId))
+			From("Booking").Where("UserID = ?", c.connected().UserID))
 	if err != nil {
 		panic(err)
 	}
@@ -62,7 +62,7 @@ func (c Hotels) Index() revel.Result {
 	return c.Render(bookings)
 }
 
-// swagger:route GET /hotels/ListJson enter demo
+// swagger:route GET /hotels/ListJSON enter demo
 //
 // Enter Demo
 //
@@ -104,7 +104,7 @@ func (c Hotels) Index() revel.Result {
 //     description: Success
 //   '401':
 //     description: Invalid User
-func (c Hotels) ListJson(search string, size, page uint64) revel.Result {
+func (c Hotels) ListJSON(search string, size, page uint64) revel.Result {
 	if page == 0 {
 		page = 1
 	}
@@ -150,7 +150,7 @@ func (c Hotels) List(search string, size, page uint64) revel.Result {
 	return c.Render(hotels, search, size, page, nextPage)
 }
 
-func (c Hotels) loadHotelById(id int) *models.Hotel {
+func (c Hotels) loadHotelByID(id int) *models.Hotel {
 	h, err := c.Txn.Get(models.Hotel{}, id)
 	if err != nil {
 		panic(err)
@@ -162,7 +162,7 @@ func (c Hotels) loadHotelById(id int) *models.Hotel {
 }
 
 func (c Hotels) Show(id int) revel.Result {
-	hotel := c.loadHotelById(id)
+	hotel := c.loadHotelByID(id)
 	if hotel == nil {
 		return c.NotFound("Hotel %d does not exist", id)
 	}
@@ -188,7 +188,7 @@ func (c Hotels) SaveSettings(password, verifyPassword string) revel.Result {
 	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	_, err := c.Txn.ExecUpdate(c.Db.SqlStatementBuilder.
 		Update("User").Set("HashedPassword", bcryptPassword).
-		Where("UserId=?", c.connected().UserId))
+		Where("UserID=?", c.connected().UserID))
 	if err != nil {
 		panic(err)
 	}
@@ -197,7 +197,7 @@ func (c Hotels) SaveSettings(password, verifyPassword string) revel.Result {
 }
 
 func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
-	hotel := c.loadHotelById(id)
+	hotel := c.loadHotelByID(id)
 	if hotel == nil {
 		return c.NotFound("Hotel %d does not exist", id)
 	}
@@ -219,7 +219,7 @@ func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
 			panic(err)
 		}
 		c.Flash.Success("Thank you, %s, your confirmation number for %s is %d",
-			booking.User.Name, hotel.Name, booking.BookingId)
+			booking.User.Name, hotel.Name, booking.BookingID)
 		return c.Redirect(routes.Hotels.Index())
 	}
 
@@ -227,7 +227,7 @@ func (c Hotels) ConfirmBooking(id int, booking models.Booking) revel.Result {
 }
 
 func (c Hotels) CancelBooking(id int) revel.Result {
-	_, err := c.Txn.Delete(&models.Booking{BookingId: id})
+	_, err := c.Txn.Delete(&models.Booking{BookingID: id})
 	if err != nil {
 		panic(err)
 	}
@@ -236,7 +236,7 @@ func (c Hotels) CancelBooking(id int) revel.Result {
 }
 
 func (c Hotels) Book(id int) revel.Result {
-	hotel := c.loadHotelById(id)
+	hotel := c.loadHotelByID(id)
 	if hotel == nil {
 		return c.NotFound("Hotel %d does not exist", id)
 	}
