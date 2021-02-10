@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func init() {
+func init() { //nolint:gochecknoinits
 	// Filters is the default set of global filters.
 	revel.Filters = []revel.Filter{
 		revel.PanicFilter,             // Recover from panics and display an error page instead.
@@ -35,14 +35,14 @@ func init() {
 			}
 		}
 
-		t := Dbm.AddTable(models.User{}).SetKeys(true, "UserId")
+		t := Dbm.AddTable(models.User{}).SetKeys(true, "UserID")
 		t.ColMap("Password").Transient = true
 		setColumnSizes(t, map[string]int{
 			"Username": 20,
 			"Name":     100,
 		})
 
-		t = Dbm.AddTable(models.Hotel{}).SetKeys(true, "HotelId")
+		t = Dbm.AddTable(models.Hotel{}).SetKeys(true, "HotelID")
 		setColumnSizes(t, map[string]int{
 			"Name":    50,
 			"Address": 100,
@@ -52,7 +52,7 @@ func init() {
 			"Country": 40,
 		})
 
-		t = Dbm.AddTable(models.Booking{}).SetKeys(true, "BookingId")
+		t = Dbm.AddTable(models.Booking{}).SetKeys(true, "BookingID")
 		t.ColMap("User").Transient = true
 		t.ColMap("Hotel").Transient = true
 		t.ColMap("CheckInDate").Transient = true
@@ -90,9 +90,9 @@ func init() {
 			}
 		}
 		bookings := []*models.Booking{
-			{0, demoUser.UserId, hotels[0].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
-			{0, demoUser.UserId, hotels[1].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
-			{0, demoUser.UserId, hotels[2].HotelId, time.Now().Format(models.SQL_DATE_FORMAT), time.Now().Format(models.SQL_DATE_FORMAT), "id3", "n3", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[2]},
+			{0, demoUser.UserID, hotels[0].HotelID, time.Now().Format(models.SQLDateFormat), time.Now().Format(models.SQLDateFormat), "id1", "n1", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[0]},
+			{0, demoUser.UserID, hotels[1].HotelID, time.Now().Format(models.SQLDateFormat), time.Now().Format(models.SQLDateFormat), "id2", "n2", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[1]},
+			{0, demoUser.UserID, hotels[2].HotelID, time.Now().Format(models.SQLDateFormat), time.Now().Format(models.SQLDateFormat), "id3", "n3", 12, 2, false, 2, time.Now(), time.Now(), demoUser, hotels[2]},
 		}
 		for _, booking := range bookings {
 			if err := Dbm.Insert(booking); err != nil {
@@ -102,7 +102,7 @@ func init() {
 	}, 5)
 }
 
-var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
+func HeaderFilter(c *revel.Controller, fc []revel.Filter) {
 	// Add some common security headers
 	c.Response.Out.Header().Add("X-Frame-Options", "SAMEORIGIN")
 	c.Response.Out.Header().Add("X-XSS-Protection", "1; mode=block")

@@ -17,4 +17,4 @@ func FindOrCreate(username string) *User {
 	return user
 }
 
-var db = make(map[string]*User)
+var db = make(map[string]*User) //nolint:gochecknoglobals

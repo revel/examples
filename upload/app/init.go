@@ -1,9 +1,18 @@
 package app
 
 import (
-	"errors"
-
 	"github.com/revel/revel"
+)
+
+type Error string
+
+func (e Error) Error() string {
+	return string(e)
+}
+
+const (
+	ErrInvalid    Error = "invalid dict call"
+	ErrStringKeys Error = "dict keys must be strings"
 )
 
 func init() {
@@ -33,7 +42,7 @@ func init() {
 	// Example use: {{template "button.html" dict "dot" . "class" "active"}}
 	revel.TemplateFuncs["dict"] = func(values ...interface{}) (map[string]interface{}, error) {
 		if len(values)%2 != 0 {
-			return nil, errors.New("invalid dict call")
+			return nil, ErrInvalid
 		}
 
 		dict := make(map[string]interface{}, len(values)/2)
@@ -41,7 +50,7 @@ func init() {
 			if key, ok := values[i].(string); ok {
 				dict[key] = values[i+1]
 			} else {
-				return nil, errors.New("dict keys must be strings")
+				return nil, ErrStringKeys
 			}
 		}
 
@@ -49,10 +58,9 @@ func init() {
 	}
 }
 
-// TODO turn this into revel.HeaderFilter
 // should probably also have a filter for CSRF
 // not sure if it can go in the same filter or not.
-var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
+func HeaderFilter(c *revel.Controller, fc []revel.Filter) {
 	// Add some common security headers
 	c.Response.Out.Header().Add("X-Frame-Options", "SAMEORIGIN")
 	c.Response.Out.Header().Add("X-XSS-Protection", "1; mode=block")

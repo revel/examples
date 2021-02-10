@@ -22,7 +22,7 @@ type Application struct {
 // You need to bind loisant.org to your machine with /etc/hosts to
 // test the application locally.
 
-var FACEBOOK = &oauth2.Config{
+var Facebook = &oauth2.Config{ //nolint:gochecknoglobals
 	ClientID:     "943076975742162",
 	ClientSecret: "d3229ebe3501771344bb0f2db2324014",
 	Scopes:       []string{},
@@ -34,21 +34,30 @@ func (c Application) Index() revel.Result {
 	u := c.connected()
 	me := map[string]interface{}{}
 	if u != nil && u.AccessToken != "" {
-		resp, _ := http.Get("https://graph.facebook.com/me?access_token=" +
+		resp, err := http.Get("https://graph.facebook.com/me?access_token=" +
 			url.QueryEscape(u.AccessToken))
+		if err != nil {
+			c.Log.Error("Failed HTTP GET", "error", err)
+
+			return nil
+		}
+
 		defer resp.Body.Close()
+
 		if err := json.NewDecoder(resp.Body).Decode(&me); err != nil {
 			c.Log.Error("json decode error", "error", err)
 		}
+
 		c.Log.Info("Data fetched", "data", me)
 	}
 
-	authUrl := FACEBOOK.AuthCodeURL("state", oauth2.AccessTypeOffline)
-	return c.Render(me, authUrl)
+	authURL := Facebook.AuthCodeURL("state", oauth2.AccessTypeOffline)
+
+	return c.Render(me, authURL)
 }
 
 func (c Application) Auth(code string) revel.Result {
-	tok, err := FACEBOOK.Exchange(oauth2.NoContext, code)
+	tok, err := Facebook.Exchange(oauth2.NoContext, code)
 	if err != nil {
 		c.Log.Error("Exchange error", "error", err)
 		return c.Redirect(Application.Index)
@@ -56,6 +65,7 @@ func (c Application) Auth(code string) revel.Result {
 
 	user := c.connected()
 	user.AccessToken = tok.AccessToken
+
 	return c.Redirect(Application.Index)
 }
 
@@ -65,11 +75,13 @@ func setuser(c *revel.Controller) revel.Result {
 		uid, _ := strconv.ParseInt(c.Session["uid"].(string), 10, 0)
 		user = models.GetUser(int(uid))
 	}
+
 	if user == nil {
 		user = models.NewUser()
-		c.Session["uid"] = fmt.Sprintf("%d", user.Uid)
+		c.Session["uid"] = fmt.Sprintf("%d", user.UID)
 	}
 	c.ViewArgs["user"] = user
+
 	return nil
 }
 

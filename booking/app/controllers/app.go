@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"database/sql"
+	"errors"
 
 	"github.com/revel/examples/booking/app/models"
 	"github.com/revel/examples/booking/app/routes"
@@ -34,14 +35,21 @@ func (c Application) connected() *models.User {
 
 func (c Application) getUser(username string) (user *models.User) {
 	user = &models.User{}
+
 	_, err := c.Session.GetInto("fulluser", user, false)
+	if err != nil {
+		c.Log.Error("Failed to get fulluser from session", "error", err)
+
+		return nil
+	}
+
 	if user.Username == username {
 		return user
 	}
 
 	err = c.Txn.SelectOne(user, c.Db.SqlStatementBuilder.Select("*").From("User").Where("Username=?", username))
 	if err != nil {
-		if err != sql.ErrNoRows {
+		if errors.Is(err, sql.ErrNoRows) {
 			// c.Txn.Select(user, c.Db.SqlStatementBuilder.Select("*").From("User").Limit(1))
 			count, _ := c.Txn.SelectInt(c.Db.SqlStatementBuilder.Select("count(*)").From("User"))
 			c.Log.Error("Failed to find user", "user", username, "error", err, "count", count)
