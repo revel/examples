@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	UserId             int
+	UserID             int
 	Name               string
 	Username, Password string
 	HashedPassword     []byte
@@ -18,7 +18,7 @@ func (u *User) String() string {
 	return fmt.Sprintf("User(%s)", u.Username)
 }
 
-var userRegex = regexp.MustCompile("^\\w*$")
+var userRegex = regexp.MustCompile(`^\w*$`)
 
 func (u *User) Validate(v *revel.Validation) {
 	v.Check(u.Username,

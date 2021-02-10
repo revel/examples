@@ -9,7 +9,7 @@ import (
 	"github.com/revel/revel"
 )
 
-var TWITTER = oauth.NewConsumer(
+var Twitter = oauth.NewConsumer( //nolint:gochecknoglobals
 	"VgRjky4dTA1U2Ck16MmZw",
 	"l8lOLyIF3peCFEvrEoTc8h4oFwieAFgPM6eeTRo30I",
 	oauth.ServiceProvider{
@@ -30,7 +30,7 @@ func (c Application) Index() revel.Result {
 	}
 
 	// We have a token, so look for mentions.
-	resp, err := TWITTER.Get(
+	resp, err := Twitter.Get(
 		"https://api.twitter.com/1.1/statuses/mentions_timeline.json",
 		map[string]string{"count": "10"},
 		user.AccessToken)
@@ -42,7 +42,7 @@ func (c Application) Index() revel.Result {
 
 	// Extract the mention text.
 	mentions := []struct {
-		Text string `json:text`
+		Text string `json:"text"`
 	}{}
 	err = json.NewDecoder(resp.Body).Decode(&mentions)
 	if err != nil {
@@ -53,7 +53,7 @@ func (c Application) Index() revel.Result {
 }
 
 func (c Application) SetStatus(status string) revel.Result {
-	resp, err := TWITTER.PostForm(
+	resp, err := Twitter.PostForm(
 		"http://api.twitter.com/1.1/statuses/update.json",
 		map[string]string{"status": status},
 		getUser().AccessToken,
@@ -71,27 +71,29 @@ func (c Application) SetStatus(status string) revel.Result {
 
 // Twitter authentication
 
-func (c Application) Authenticate(oauth_verifier string) revel.Result {
+func (c Application) Authenticate(oauthVerifier string) revel.Result {
 	user := getUser()
-	if oauth_verifier != "" {
+	if oauthVerifier != "" {
 		// We got the verifier; now get the access token, store it and back to index
-		accessToken, err := TWITTER.AuthorizeToken(user.RequestToken, oauth_verifier)
+		accessToken, err := Twitter.AuthorizeToken(user.RequestToken, oauthVerifier)
 		if err == nil {
 			user.AccessToken = accessToken
 		} else {
 			c.Log.Error("Error connecting to twitter:", "error", err)
 		}
+
 		return c.Redirect(Application.Index)
 	}
 
-	requestToken, url, err := TWITTER.GetRequestTokenAndUrl("http://127.0.0.1:9000/Application/Authenticate")
+	requestToken, url, err := Twitter.GetRequestTokenAndUrl("http://127.0.0.1:9000/Application/Authenticate")
 	if err == nil {
 		// We received the unauthorized tokens in the OAuth object - store it before we proceed
 		user.RequestToken = requestToken
 		return c.Redirect(url)
-	} else {
-		c.Log.Error("Error connecting to twitter:", "error", err)
 	}
+
+	c.Log.Error("Error connecting to twitter:", "error", err)
+
 	return c.Redirect(Application.Index)
 }
 
@@ -99,6 +101,6 @@ func getUser() *models.User {
 	return models.FindOrCreate("guest")
 }
 
-func init() {
-	TWITTER.Debug(true)
+func init() { //nolint:gochecknoinits
+	Twitter.Debug(true)
 }

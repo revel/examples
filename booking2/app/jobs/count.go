@@ -21,8 +21,11 @@ func (c BookingCounter) Run() {
 	fmt.Printf("There are %d bookings.\n", len(bookings))
 }
 
-func init() {
+func init() { //nolint:gochecknoinits
 	revel.OnAppStart(func() {
-		jobs.Schedule("@every 1m", BookingCounter{})
+		if err := jobs.Schedule("@every 1m",
+			BookingCounter{}); err != nil {
+			panic(err)
+		}
 	})
 }

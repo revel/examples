@@ -2,7 +2,7 @@
 
 <h1>Confirm hotel booking</h1>
 
-<form method="POST" action="{%url "Hotels.ConfirmBooking" hotel.HotelId%}">
+<form method="POST" action="{%url "Hotels.ConfirmBooking" hotel.HotelID%}">
   <p>
     <strong>Name:</strong> {{hotel.Name}}
   </p>
@@ -51,7 +51,7 @@
   <p class="buttons">
     <input type="submit" value="Confirm" name="confirm">
     <input type="submit" value="Revise" name="revise">
-    <a href="{%url "Hotels.Show" hotel.HotelId%}">Cancel</a>
+    <a href="{%url "Hotels.Show" hotel.HotelID%}">Cancel</a>
   </p>
 </form>
 

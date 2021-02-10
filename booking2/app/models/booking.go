@@ -10,9 +10,9 @@ import (
 )
 
 type Booking struct {
-	BookingId    int
-	UserId       int
-	HotelId      int
+	BookingID    int
+	UserID       int
+	HotelID      int
 	CheckInStr   string
 	CheckOutStr  string
 	CardNumber   string
@@ -56,8 +56,8 @@ func (b Booking) Nights() int {
 }
 
 const (
-	DATE_FORMAT     = "Jan _2, 2006"
-	SQL_DATE_FORMAT = "2006-01-02"
+	DateFormat    = "Jan _2, 2006"
+	SQLDateFormat = "2006-01-02"
 )
 
 func (b Booking) Description() string {
@@ -67,8 +67,8 @@ func (b Booking) Description() string {
 
 	return fmt.Sprintf("%s, %s to %s",
 		b.Hotel.Name,
-		b.CheckInDate.Format(DATE_FORMAT),
-		b.CheckOutDate.Format(DATE_FORMAT))
+		b.CheckInDate.Format(DateFormat),
+		b.CheckOutDate.Format(DateFormat))
 }
 
 func (b Booking) String() string {
@@ -80,10 +80,10 @@ func (b Booking) String() string {
 // - Sqlite's lack of support for datetimes.
 
 func (b *Booking) PreInsert(_ gorp.SqlExecutor) error {
-	b.UserId = b.User.UserId
-	b.HotelId = b.Hotel.HotelId
-	b.CheckInStr = b.CheckInDate.Format(SQL_DATE_FORMAT)
-	b.CheckOutStr = b.CheckOutDate.Format(SQL_DATE_FORMAT)
+	b.UserID = b.User.UserID
+	b.HotelID = b.Hotel.HotelID
+	b.CheckInStr = b.CheckInDate.Format(SQLDateFormat)
+	b.CheckOutStr = b.CheckOutDate.Format(SQLDateFormat)
 	return nil
 }
 
@@ -93,23 +93,26 @@ func (b *Booking) PostGet(exe gorp.SqlExecutor) error {
 		err error
 	)
 
-	obj, err = exe.Get(User{}, b.UserId)
+	obj, err = exe.Get(User{}, b.UserID)
 	if err != nil {
-		return fmt.Errorf("error loading a booking's user (%d): %s", b.UserId, err)
+		return fmt.Errorf("error loading a booking's user (%d): %w", b.UserID, err)
 	}
+
 	b.User = obj.(*User)
 
-	obj, err = exe.Get(Hotel{}, b.HotelId)
+	obj, err = exe.Get(Hotel{}, b.HotelID)
 	if err != nil {
-		return fmt.Errorf("error loading a booking's hotel (%d): %s", b.HotelId, err)
+		return fmt.Errorf("error loading a booking's hotel (%d): %w", b.HotelID, err)
 	}
+
 	b.Hotel = obj.(*Hotel)
 
-	if b.CheckInDate, err = time.Parse(SQL_DATE_FORMAT, b.CheckInStr); err != nil {
-		return fmt.Errorf("error parsing check in date '%s': %v", b.CheckInStr, err)
+	if b.CheckInDate, err = time.Parse(SQLDateFormat, b.CheckInStr); err != nil {
+		return fmt.Errorf("error parsing check in date '%s': %w", b.CheckInStr, err)
 	}
-	if b.CheckOutDate, err = time.Parse(SQL_DATE_FORMAT, b.CheckOutStr); err != nil {
-		return fmt.Errorf("error parsing check out date '%s': %v", b.CheckOutStr, err)
+	if b.CheckOutDate, err = time.Parse(SQLDateFormat, b.CheckOutStr); err != nil {
+		return fmt.Errorf("error parsing check out date '%s': %w", b.CheckOutStr, err)
 	}
+
 	return nil
 }

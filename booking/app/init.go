@@ -15,7 +15,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func init() {
+func init() { //nolint:gochecknoinits
 	// Filters is the default set of global filters.
 	revel.Filters = []revel.Filter{
 		revel.PanicFilter,             // Recover from panics and display an error page instead.
@@ -98,7 +98,9 @@ func init() {
 		})
 
 		rgorp.Db.TraceOn(revel.AppLog)
-		Dbm.CreateTables()
+		if err := Dbm.CreateTables(); err != nil {
+			panic(err)
+		}
 
 		bcryptPassword, _ := bcrypt.GenerateFromPassword(
 			[]byte("demo"), bcrypt.DefaultCost)
@@ -108,9 +110,11 @@ func init() {
 			Password:       "demo",
 			HashedPassword: bcryptPassword,
 		}
+
 		if err := Dbm.Insert(demoUser); err != nil {
 			panic(err)
 		}
+
 		count, _ := rgorp.Db.SelectInt(rgorp.Db.SqlStatementBuilder.Select("count(*)").From("User"))
 		if count > 1 {
 			revel.AppLog.Panic("Unexpected multiple users", "count", count)
@@ -154,8 +158,8 @@ func init() {
 			{
 				UserID:       demoUser.UserID,
 				HotelID:      hotels[0].HotelID,
-				CheckInStr:   time.Now().Format(models.SQL_DATE_FORMAT),
-				CheckOutStr:  time.Now().Format(models.SQL_DATE_FORMAT),
+				CheckInStr:   time.Now().Format(models.SQLDateFormat),
+				CheckOutStr:  time.Now().Format(models.SQLDateFormat),
 				CardNumber:   "id1",
 				NameOnCard:   "n1",
 				CardExpMonth: 12,
@@ -170,8 +174,8 @@ func init() {
 			{
 				UserID:       demoUser.UserID,
 				HotelID:      hotels[1].HotelID,
-				CheckInStr:   time.Now().Format(models.SQL_DATE_FORMAT),
-				CheckOutStr:  time.Now().Format(models.SQL_DATE_FORMAT),
+				CheckInStr:   time.Now().Format(models.SQLDateFormat),
+				CheckOutStr:  time.Now().Format(models.SQLDateFormat),
 				CardNumber:   "id2",
 				NameOnCard:   "n2",
 				CardExpMonth: 12,
@@ -186,8 +190,8 @@ func init() {
 			{
 				UserID:       demoUser.UserID,
 				HotelID:      hotels[2].HotelID,
-				CheckInStr:   time.Now().Format(models.SQL_DATE_FORMAT),
-				CheckOutStr:  time.Now().Format(models.SQL_DATE_FORMAT),
+				CheckInStr:   time.Now().Format(models.SQLDateFormat),
+				CheckOutStr:  time.Now().Format(models.SQLDateFormat),
 				CardNumber:   "id3",
 				NameOnCard:   "n3",
 				CardExpMonth: 12,
@@ -208,7 +212,7 @@ func init() {
 	}, 5)
 }
 
-var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
+func HeaderFilter(c *revel.Controller, fc []revel.Filter) {
 	// Add some common security headers
 	c.Response.Out.Header().Add("X-Frame-Options", "SAMEORIGIN")
 	c.Response.Out.Header().Add("X-XSS-Protection", "1; mode=block")

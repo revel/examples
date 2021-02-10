@@ -5,7 +5,7 @@ import (
 )
 
 type Hotel struct {
-	HotelId          int
+	HotelID          int
 	Name, Address    string
 	City, State, Zip string
 	Country          string
