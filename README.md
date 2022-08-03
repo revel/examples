@@ -11,23 +11,22 @@ Each directory contains a standalone [Revel](http://revel.github.io/manual)  app
 git clone https://github.com/revel/examples.git $GOPATH/src/github.com/revel/examples
 revel run github.com/revel/examples/booking
 ```
-
-* [Booking](booking.html) 
+* [Booking](https://revel.github.io/examples/booking.html)
   - A database-driven hotel-booking application, including user management
-  
-* [Chat](chat.html) 
+
+* [Chat](https://revel.github.io/examples/chat.html)
   - A chat room demonstrating active refresh, long-polling (comet), and [websocket](http://revel.github.io/manual/websockets.html) implementations.
-  
-* [Validation](validation.html) 
+
+* [Validation](https://revel.github.io/examples/validation.html)
   - A demonstration of input [validation](http://revel.github.io/manual/validation.html).
-  
-* [Upload](upload.html) 
+
+* [Upload](https://revel.github.io/examples/upload.html)
   - Demonstrates single and multiple file uploads to a webserver via http.
-  
-* [Twitter OAuth](twitter-oauth.html) 
+
+* [Twitter OAuth](https://revel.github.io/examples/twitter-oauth.html)
   - Display `mentions` and allows `posting` to a Twitter account using OAuth.
-  
-* [Facebook OAuth2](facebook-oauth2.html) 
+
+* [Facebook OAuth2](https://revel.github.io/examples/facebook-oauth2.html)
   - Display Facebook user information using OAuth2.
   
   
